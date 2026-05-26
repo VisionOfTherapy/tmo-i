@@ -1,0 +1,2386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TMO I — Terapia Manual Ortopédica</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F5F0E8;--ivory:#FAF8F3;--dark:#1C1A17;--charcoal:#3A3530;
+  --warm-gray:#7A7469;--accent:#8B6B3D;--accent-light:#C4A882;
+  --accent-pale:#EDE4D6;--rust:#9B4A2C;--rust-pale:#F2E8E3;
+  --border:rgba(139,107,61,0.2);--border-strong:rgba(139,107,61,0.4);
+  --shadow:rgba(28,26,23,0.06);
+  --cine-color:#D4620A;--cine-light:#F9D5BC;--cine-dark:#A84A06;
+}
+body{font-family:'Jost',sans-serif;background:var(--ivory);color:var(--dark);font-size:15px;line-height:1.7;min-height:100vh}
+
+/* ===== ONBOARDING ===== */
+#onboarding{position:fixed;inset:0;background:linear-gradient(135deg,#1C1A17 0%,#3A3530 50%,#2A2218 100%);z-index:9000;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.ob-box{background:rgba(250,248,243,0.04);border:1px solid rgba(196,168,130,0.2);border-radius:20px;padding:2.5rem 3rem;width:460px;max-width:95vw;backdrop-filter:blur(10px)}
+.ob-logo{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:600;color:var(--accent-light);text-align:center;letter-spacing:0.06em;margin-bottom:0.3rem}
+.ob-sub{text-align:center;font-size:13px;color:rgba(196,168,130,0.6);margin-bottom:2rem;letter-spacing:0.04em}
+.ob-avatar-row{display:flex;justify-content:center;margin-bottom:1.5rem}
+.ob-avatar{width:88px;height:88px;border-radius:50%;border:3px solid rgba(196,168,130,0.4);object-fit:cover;background:rgba(196,168,130,0.1);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:36px;color:rgba(196,168,130,0.5);overflow:hidden;transition:border-color 0.2s}
+.ob-avatar:hover{border-color:var(--accent-light)}
+.ob-avatar img{width:100%;height:100%;object-fit:cover}
+.ob-gen-btn{display:block;margin:0.5rem auto 0;font-size:11px;color:rgba(196,168,130,0.6);background:none;border:none;cursor:pointer;text-decoration:underline;letter-spacing:0.04em}
+.ob-field{margin-bottom:1rem}
+.ob-field label{display:block;font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--accent-light);margin-bottom:0.4rem;opacity:0.8}
+.ob-field input{width:100%;padding:10px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(196,168,130,0.25);border-radius:8px;color:#fff;font-family:'Jost',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s}
+.ob-field input::placeholder{color:rgba(196,168,130,0.3)}
+.ob-field input:focus{border-color:var(--accent-light)}
+.ob-start-btn{width:100%;margin-top:1.2rem;padding:13px;background:var(--cine-color);color:#fff;border:none;border-radius:10px;font-family:'Jost',sans-serif;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:0.04em;transition:background 0.2s}
+.ob-start-btn:hover{background:var(--cine-dark)}
+.ob-anon{text-align:center;font-size:12px;color:rgba(196,168,130,0.4);margin-top:0.8rem;cursor:pointer;text-decoration:underline}
+
+/* ===== PAUSE BLOCKER ===== */
+#pause-blocker{display:none;position:fixed;inset:0;background:linear-gradient(135deg,#0D0B09 0%,#1A1510 100%);z-index:8000;align-items:center;justify-content:center;flex-direction:column}
+#pause-blocker.visible{display:flex}
+.pb-logo{font-size:72px;margin-bottom:1rem;animation:breathe 3s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:0.8}50%{transform:scale(1.1);opacity:1}}
+.pb-title{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:600;color:var(--accent-light);margin-bottom:0.4rem}
+.pb-subtitle{font-size:16px;color:rgba(196,168,130,0.5);margin-bottom:2rem}
+.pb-tip{font-size:20px;color:rgba(255,255,255,0.85);max-width:420px;text-align:center;line-height:1.5;margin-bottom:2rem;font-style:italic}
+.pb-timer{font-family:'Jost',monospace;font-size:52px;font-weight:300;color:var(--accent-light);letter-spacing:0.08em}
+.pb-skip{margin-top:1.5rem;font-size:12px;color:rgba(196,168,130,0.3);background:none;border:none;cursor:pointer;text-decoration:underline;letter-spacing:0.04em}
+
+/* ===== HEADER ===== */
+header{background:var(--dark);color:var(--cream);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(196,168,130,0.15)}
+.logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;letter-spacing:0.08em;color:var(--accent-light)}
+.logo span{color:#fff;font-weight:400}
+.header-center{display:flex;align-items:center;gap:1rem}
+.user-pill{display:flex;align-items:center;gap:0.5rem;background:rgba(196,168,130,0.08);border:1px solid rgba(196,168,130,0.18);border-radius:20px;padding:4px 12px 4px 6px;cursor:pointer}
+.user-pill img,.user-pill .user-avatar{width:26px;height:26px;border-radius:50%;object-fit:cover;background:rgba(196,168,130,0.2);font-size:14px;display:flex;align-items:center;justify-content:center}
+.user-pill span{font-size:13px;color:var(--accent-light);font-weight:500}
+.header-right{display:flex;align-items:center;gap:0.8rem}
+.pomo-ring-wrap{position:relative;width:44px;height:44px;cursor:pointer}
+.pomo-ring-wrap svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.pomo-ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.pomo-ring-time{font-family:'Jost',monospace;font-size:9.5px;font-weight:600;color:var(--accent-light);letter-spacing:0.03em}
+.pomo-ring-session{font-size:7.5px;color:rgba(196,168,130,0.5);margin-top:1px}
+.pomo-ring-label.pause-mode .pomo-ring-time{color:#E59B7A}
+.settings-btn{background:none;border:none;cursor:pointer;color:var(--accent-light);display:flex;align-items:center;padding:5px;border-radius:4px;transition:background 0.2s}
+.settings-btn:hover{background:rgba(196,168,130,0.1)}
+.settings-btn svg{width:18px;height:18px}
+
+/* ===== NAV ===== */
+nav{background:var(--cream);border-bottom:1px solid var(--border);display:flex;padding:0 1.5rem;overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+.tab{font-size:12px;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:var(--warm-gray);border:none;background:none;padding:13px 18px;cursor:pointer;border-bottom:2px solid transparent;transition:color 0.2s,border-color 0.2s;white-space:nowrap}
+.tab:hover{color:var(--accent)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-cine{color:var(--cine-color)!important;font-weight:600}
+.tab-cine.active{border-bottom-color:var(--cine-color)!important}
+
+/* ===== PAGES ===== */
+.page{display:none}.page.active{display:block}
+.content{max-width:1100px;margin:0 auto;padding:2rem 2rem 4rem}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:500;color:var(--dark);margin-bottom:0.3rem}
+.page-subtitle{font-size:13px;color:var(--warm-gray);margin-bottom:2rem;letter-spacing:0.03em}
+.divider{width:44px;height:2px;background:var(--accent);margin:0.5rem 0 1.8rem;border-radius:1px}
+
+/* ===== CHAPTER DONE CARD ===== */
+.chapter-done-card{display:flex;align-items:center;justify-content:space-between;background:#fff;border:2px dashed var(--border);border-radius:12px;padding:1rem 1.5rem;margin:1.5rem 0;cursor:pointer;transition:all 0.2s;gap:1rem}
+.chapter-done-card:hover{border-color:var(--accent);background:var(--accent-pale)}
+.chapter-done-card.done{border-style:solid;border-color:#2E7D32;background:#F1F8E9;cursor:default}
+.chapter-done-left{display:flex;align-items:center;gap:0.8rem}
+.chapter-done-icon{width:36px;height:36px;border-radius:50%;background:var(--accent-pale);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.chapter-done-card.done .chapter-done-icon{background:#E8F5E9;border-color:#2E7D32}
+.chapter-done-text strong{font-size:13px;font-weight:600;color:var(--dark)}
+.chapter-done-text p{font-size:12px;color:var(--warm-gray);margin:0}
+.chapter-done-card.done .chapter-done-text p{color:#388E3C}
+.chapter-done-btn{background:var(--accent);color:#fff;border:none;padding:7px 16px;border-radius:6px;font-family:'Jost',sans-serif;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:background 0.2s}
+.chapter-done-card.done .chapter-done-btn{background:#2E7D32}
+.chapter-done-btn:hover{background:var(--charcoal)}
+
+/* ===== CINESITERAPIA PAGE ===== */
+.cine-hero{background:linear-gradient(135deg,var(--cine-color) 0%,var(--cine-dark) 100%);border-radius:14px;padding:2rem 2.5rem;margin-bottom:2rem;position:relative;overflow:hidden}
+.cine-hero::before{content:'';position:absolute;top:-30px;right:-30px;width:180px;height:180px;background:rgba(255,255,255,0.05);border-radius:50%}
+.cine-hero h1{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;color:#fff;margin-bottom:0.3rem}
+.cine-hero p{font-size:13px;color:rgba(255,255,255,0.75)}
+.cine-progress{display:flex;align-items:center;gap:1rem;margin-bottom:2rem;background:#fff;border:1px solid var(--border);border-radius:10px;padding:0.8rem 1.2rem}
+.cine-progress-text{font-size:12px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+.cine-progress-bar{flex:1;height:8px;background:var(--accent-pale);border-radius:4px;overflow:hidden}
+.cine-progress-fill{height:100%;background:linear-gradient(90deg,var(--cine-color),var(--accent));border-radius:4px;transition:width 0.5s ease;width:0%}
+.cine-progress-count{font-size:13px;font-weight:600;color:var(--cine-color);white-space:nowrap}
+.cine-section{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:1.2rem;overflow:hidden}
+.cine-section-header{display:flex;align-items:center;gap:1rem;padding:1rem 1.5rem;background:var(--accent-pale);border-bottom:1px solid var(--border);cursor:pointer}
+.cine-num{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:var(--accent);line-height:1;min-width:32px}
+.cine-section-header h3{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--dark)}
+.cine-section-body{padding:1.2rem 1.5rem}
+.cine-key-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.8rem;margin-bottom:1rem}
+.cine-key{background:var(--ivory);border:1px solid var(--border);border-radius:8px;padding:0.8rem 1rem}
+.ck-label{font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--cine-color);margin-bottom:0.3rem}
+.ck-val{font-size:13px;color:var(--charcoal);line-height:1.5}
+.cine-list{list-style:none}
+.cine-list li{padding:0.5rem 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--charcoal);display:flex;gap:0.5rem}
+.cine-list li:last-child{border-bottom:none}
+.cine-list li::before{content:'→';color:var(--cine-color);flex-shrink:0;font-weight:700}
+.cine-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:1rem}
+.cine-table th{background:var(--dark);color:var(--cream);font-size:11px;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;padding:8px 12px;text-align:left}
+.cine-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.cine-table tr:hover td{background:var(--accent-pale)}
+.cine-table .lc{font-weight:500;color:var(--cine-color)}
+
+/* ===== MIND MAP ===== */
+.mindmap-controls{display:flex;gap:0.6rem;flex-wrap:wrap;margin-bottom:1rem;align-items:center}
+.mm-tab{font-size:12px;font-weight:500;padding:6px 14px;border:1px solid var(--border-strong);border-radius:20px;cursor:pointer;background:#fff;color:var(--warm-gray);transition:all 0.2s}
+.mm-tab:hover,.mm-tab.active{background:var(--dark);color:var(--accent-light);border-color:var(--dark)}
+.mm-edit-btn{margin-left:auto;font-size:12px;padding:6px 14px;background:var(--accent-pale);color:var(--accent);border:1px solid var(--border);border-radius:20px;cursor:pointer;font-weight:500;transition:all 0.2s}
+.mm-edit-btn:hover{background:var(--accent);color:#fff}
+#mindmap-canvas{width:100%;background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;position:relative;height:560px;cursor:grab;user-select:none;touch-action:none}
+#mindmap-canvas:active{cursor:grabbing}
+#mindmap-canvas svg{display:block;width:100%;height:100%;overflow:visible}
+.mm-toolbar{display:flex;gap:0.5rem;margin-bottom:0.5rem;flex-wrap:wrap}
+.mm-tool-btn{font-size:12px;padding:5px 12px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;color:var(--charcoal);transition:all 0.2s}
+.mm-tool-btn:hover{background:var(--accent-pale);border-color:var(--accent)}
+.mm-tool-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.mm-edit-panel{display:none;background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.2rem;margin-top:0.8rem}
+.mm-edit-panel.visible{display:block}
+.mm-edit-panel h4{font-family:'Cormorant Garamond',serif;font-size:17px;margin-bottom:0.8rem;color:var(--dark)}
+.mm-edit-row{display:flex;gap:0.8rem;margin-top:0.6rem;align-items:center;flex-wrap:wrap}
+.mm-edit-row label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent)}
+.mm-edit-row input[type=color]{width:32px;height:32px;border:1px solid var(--border);border-radius:4px;cursor:pointer;padding:2px}
+.mm-edit-row input[type=range]{width:100px}
+.mm-shape-row{display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:0.5rem}
+.mm-shape-btn{font-size:11px;padding:4px 10px;border:1px solid var(--border);border-radius:4px;cursor:pointer;background:#fff;transition:all 0.2s}
+.mm-shape-btn.active,.mm-shape-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.node-tooltip{position:absolute;background:var(--dark);color:#fff;font-size:11px;padding:4px 8px;border-radius:4px;pointer-events:none;display:none;z-index:10}
+
+/* ===== HOME ===== */
+#home-page .hero{text-align:center;padding:3rem 0 2.5rem}
+#home-page .hero h1{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:600;color:var(--dark);line-height:1.15;margin-bottom:0.5rem}
+#home-page .hero h1 em{font-style:italic;color:var(--accent)}
+#home-page .hero p{font-size:15px;color:var(--warm-gray);max-width:500px;margin:1rem auto 0}
+.region-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2.5rem}
+.region-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+.region-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.3s}
+.region-card:hover{border-color:var(--accent-light);box-shadow:0 4px 20px var(--shadow);transform:translateY(-2px)}
+.region-card:hover::before,.region-card.selected::before{transform:scaleX(1)}
+.region-card.selected{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-pale)}
+.region-icon{font-size:26px;margin-bottom:0.7rem}
+.region-card h3{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--dark);margin-bottom:0.3rem}
+.region-card p{font-size:13px;color:var(--warm-gray);line-height:1.5}
+.region-detail-panel{margin-top:1.5rem;display:none}
+.region-detail-panel.visible{display:block}
+.compare-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:0.8rem}
+.compare-table th{background:var(--dark);color:var(--cream);font-size:11px;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;padding:9px 14px;text-align:left}
+.compare-table td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
+.compare-table tr:hover td{background:var(--accent-pale)}
+.compare-table .label-col{font-weight:500;color:var(--accent);width:150px}
+.muscle-tag{display:inline-block;background:var(--rust-pale);color:var(--rust);border:1px solid rgba(155,74,44,0.2);font-size:11px;padding:1px 7px;border-radius:4px;margin:2px 2px 2px 0;font-weight:500}
+
+/* ===== RESUMEN SECTIONS ===== */
+.articulacion-section{margin-bottom:2.5rem}
+.articulacion-header{display:flex;align-items:baseline;gap:0.8rem;margin-bottom:0.8rem;padding-bottom:0.7rem;border-bottom:1px solid var(--border)}
+.articulacion-header h3{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;color:var(--dark)}
+.art-badge{font-size:10px;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;background:var(--accent-pale);color:var(--accent);padding:2px 9px;border-radius:20px;border:1px solid var(--border)}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:1rem}
+.info-block{background:#fff;border:1px solid var(--border);border-radius:8px;padding:0.9rem 1.1rem}
+.info-block .ib-label{font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--accent);margin-bottom:0.3rem}
+.info-block .ib-content{font-size:13px;color:var(--charcoal);line-height:1.6}
+.tecnica-list{list-style:none}
+.tecnica-list li{padding:0.5rem 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--charcoal);display:flex;gap:0.5rem}
+.tecnica-list li:last-child{border-bottom:none}
+.tecnica-list li::before{content:'→';color:var(--accent);flex-shrink:0;font-weight:600}
+.section-tabs{display:flex;gap:0.4rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.section-tab{font-size:11px;font-weight:500;letter-spacing:0.05em;padding:5px 12px;border:1px solid var(--border);border-radius:20px;cursor:pointer;background:#fff;color:var(--warm-gray);transition:all 0.2s}
+.section-tab:hover,.section-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ===== QCM ===== */
+.qcm-header{background:var(--dark);color:#fff;border-radius:12px;padding:1.2rem 1.8rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between}
+.qcm-header h2{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:#fff}
+.qcm-header p{font-size:12px;color:rgba(255,255,255,0.55);margin-top:2px}
+.qcm-score-badge{font-size:26px;font-weight:500;color:var(--accent-light);font-family:'Cormorant Garamond',serif}
+.qcm-score-badge span{font-size:13px;color:rgba(255,255,255,0.4)}
+.question-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.3rem 1.6rem;margin-bottom:1rem;transition:border-color 0.2s}
+.question-card.correct{border-color:#2E7D32;background:#F1F8E9}
+.question-card.incorrect{border-color:#C62828;background:#FBE9E7}
+.q-number{font-size:10px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem}
+.q-text{font-size:14px;font-weight:500;color:var(--dark);margin-bottom:0.8rem;line-height:1.5}
+.q-options{list-style:none}
+.q-options li{margin-bottom:0.4rem}
+.q-options label{display:flex;align-items:flex-start;gap:0.6rem;padding:0.55rem 0.9rem;border:1px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;transition:all 0.15s;background:var(--ivory);line-height:1.4}
+.q-options label:hover{border-color:var(--accent-light);background:var(--accent-pale)}
+.q-options input[type=radio]{margin-top:3px;accent-color:var(--accent);flex-shrink:0}
+.q-options label.correct-answer{border-color:#2E7D32;background:#E8F5E9;color:#1B5E20;font-weight:500}
+.q-options label.wrong-answer{border-color:#C62828;background:#FFEBEE;color:#B71C1C;text-decoration:line-through}
+.q-explication{margin-top:0.7rem;font-size:12px;color:var(--charcoal);background:var(--accent-pale);padding:0.7rem 0.9rem;border-radius:6px;border-left:3px solid var(--accent);display:none}
+.q-explication.visible{display:block}
+.qcm-btn-row{display:flex;gap:0.8rem;margin-top:1.2rem;justify-content:flex-end}
+.btn-primary{background:var(--accent);color:#fff;border:none;padding:9px 22px;border-radius:6px;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;cursor:pointer;letter-spacing:0.04em;transition:background 0.2s}
+.btn-primary:hover{background:var(--charcoal)}
+.btn-secondary{background:#fff;color:var(--accent);border:1px solid var(--border-strong);padding:9px 22px;border-radius:6px;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s}
+.btn-secondary:hover{background:var(--accent-pale)}
+
+/* ===== LEADERBOARD ===== */
+.lb-header{background:linear-gradient(135deg,var(--dark) 0%,var(--charcoal) 100%);border-radius:14px;padding:1.5rem 2rem;margin-bottom:2rem;display:flex;align-items:center;justify-content:space-between}
+.lb-header h2{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;color:var(--accent-light)}
+.lb-header p{font-size:13px;color:rgba(196,168,130,0.5);margin-top:3px}
+.lb-filters{display:flex;gap:0.5rem;margin-bottom:1.2rem}
+.lb-filter{font-size:12px;padding:5px 14px;border:1px solid var(--border);border-radius:20px;cursor:pointer;background:#fff;color:var(--warm-gray);transition:all 0.2s}
+.lb-filter.active,.lb-filter:hover{background:var(--dark);color:var(--accent-light);border-color:var(--dark)}
+.lb-table{width:100%;border-collapse:collapse}
+.lb-table th{background:var(--accent-pale);color:var(--accent);font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border)}
+.lb-table td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:14px;vertical-align:middle}
+.lb-table tr:hover td{background:var(--accent-pale)}
+.lb-table tr.me td{background:rgba(139,107,61,0.07);font-weight:500}
+.lb-rank{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--warm-gray);text-align:center;width:40px}
+.lb-rank.gold{color:#D4AF37}
+.lb-rank.silver{color:#9E9E9E}
+.lb-rank.bronze{color:#8B6B3D}
+.lb-user-cell{display:flex;align-items:center;gap:0.7rem}
+.lb-user-cell img,.lb-avatar-sm{width:32px;height:32px;border-radius:50%;object-fit:cover;background:var(--accent-pale);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px}
+.lb-bar-cell{display:flex;align-items:center;gap:0.5rem}
+.lb-bar{height:8px;background:var(--accent);border-radius:4px;transition:width 0.5s}
+.lb-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.lb-stat-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.2rem;text-align:center}
+.lb-stat-card .stat-num{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:600;color:var(--accent);line-height:1}
+.lb-stat-card .stat-label{font-size:12px;color:var(--warm-gray);margin-top:0.3rem;letter-spacing:0.04em}
+.lb-my-section{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem}
+.lb-my-section h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;margin-bottom:1rem;color:var(--dark)}
+.lb-hist-bar{display:flex;align-items:flex-end;gap:4px;height:60px;margin-top:0.8rem}
+.lb-hist-col{display:flex;flex-direction:column;align-items:center;gap:2px;flex:1}
+.lb-hist-col div:first-child{background:var(--accent);border-radius:3px 3px 0 0;min-height:3px;width:100%}
+.lb-hist-col div:last-child{font-size:9px;color:var(--warm-gray)}
+.no-lb-data{text-align:center;padding:3rem;color:var(--warm-gray);font-size:14px}
+
+/* ===== SURPRISE QUIZ ===== */
+.surprise-overlay{display:none;position:fixed;inset:0;background:rgba(28,26,23,0.8);z-index:500;align-items:center;justify-content:center}
+.surprise-overlay.visible{display:flex}
+.surprise-box{background:var(--ivory);border-radius:16px;padding:2rem;width:480px;max-width:95vw;border:2px solid var(--cine-color)}
+.surprise-badge{display:inline-block;background:var(--cine-color);color:#fff;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:0.8rem}
+.surprise-box h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;margin-bottom:0.2rem;color:var(--dark)}
+.sq-source{font-size:12px;color:var(--warm-gray);margin-bottom:0.8rem}
+.sq-timer-bar-wrap{height:4px;background:var(--border);border-radius:2px;margin-bottom:1rem;overflow:hidden}
+.sq-timer-bar{height:100%;background:var(--cine-color);border-radius:2px;transition:width 30s linear}
+.sq-question{font-size:15px;font-weight:500;margin-bottom:1rem;color:var(--dark);line-height:1.5}
+.sq-options{list-style:none;margin-bottom:0.8rem}
+.sq-options li{margin-bottom:0.4rem}
+.sq-options label{display:flex;align-items:center;gap:0.6rem;padding:0.55rem 0.9rem;border:1px solid var(--border);border-radius:7px;cursor:pointer;font-size:13px;transition:all 0.15s;background:#fff}
+.sq-options label:hover{border-color:var(--accent-light);background:var(--accent-pale)}
+.sq-options input[type=radio]{accent-color:var(--cine-color)}
+.sq-options label.sq-correct{border-color:#2E7D32;background:#E8F5E9;color:#1B5E20;font-weight:500}
+.sq-options label.sq-wrong{border-color:#C62828;background:#FFEBEE;text-decoration:line-through}
+.sq-feedback{font-size:12px;color:var(--charcoal);background:var(--accent-pale);padding:0.7rem 0.9rem;border-radius:6px;border-left:3px solid var(--cine-color);display:none;margin-bottom:0.8rem}
+.sq-feedback.visible{display:block}
+.sq-actions{display:flex;gap:0.7rem;justify-content:flex-end}
+.sq-skip{background:none;border:1px solid var(--border);color:var(--warm-gray);padding:7px 16px;border-radius:6px;cursor:pointer;font-size:12px;transition:all 0.2s}
+.sq-skip:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ===== SETTINGS MODAL ===== */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(28,26,23,0.65);z-index:200;align-items:center;justify-content:center}
+.modal-overlay.visible{display:flex}
+.modal-box{background:var(--ivory);border-radius:16px;padding:1.8rem 2.2rem;width:440px;max-width:95vw;border:1px solid var(--border);max-height:90vh;overflow-y:auto}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin-bottom:0.3rem;color:var(--dark)}
+.modal-subtitle{font-size:12px;color:var(--warm-gray);margin-bottom:1.2rem}
+.pomo-presets{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.pomo-preset{border:1px solid var(--border-strong);background:var(--ivory);border-radius:8px;padding:7px 12px;cursor:pointer;font-size:12px;font-weight:500;color:var(--charcoal);transition:all 0.2s;text-align:center;line-height:1.3}
+.pomo-preset:hover{border-color:var(--accent);background:var(--accent-pale)}
+.pomo-preset.selected{background:var(--dark);color:var(--accent-light);border-color:var(--dark)}
+.pomo-preset small{display:block;font-size:10px;opacity:0.7}
+.pomo-slider-group{margin-bottom:0.8rem}
+.pomo-slider-group label{display:flex;justify-content:space-between;font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--accent);margin-bottom:0.3rem}
+.pomo-slider-group label span{font-size:13px;font-weight:500;color:var(--dark);text-transform:none;letter-spacing:0}
+.pomo-slider-group input[type=range]{width:100%;accent-color:var(--accent)}
+.modal-actions{display:flex;gap:0.8rem;justify-content:flex-end;margin-top:1.2rem}
+
+/* ===== NOTIF ===== */
+.notif-banner{display:none;position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--dark);color:var(--cream);padding:12px 24px;border-radius:40px;font-size:13px;font-weight:500;z-index:300;border:1px solid rgba(196,168,130,0.25);box-shadow:0 8px 30px rgba(0,0,0,0.3);animation:slideUp 0.4s ease;white-space:nowrap}
+@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* ===== MIND MAP CAT BUTTONS ===== */
+.mm-cat-btn{font-size:11px;padding:3px 8px;border:1px solid var(--border);border-radius:12px;cursor:pointer;background:var(--ivory);color:var(--warm-gray);transition:all 0.15s;font-family:'Jost',sans-serif}
+.mm-cat-btn.active,.mm-cat-btn:hover{background:var(--dark);color:var(--accent-light);border-color:var(--dark)}
+.mm-lib-item{background:var(--ivory);border:1px solid var(--border);border-radius:7px;padding:6px 10px;font-size:12px;color:var(--charcoal);cursor:grab;transition:all 0.15s;display:flex;align-items:center;gap:0.5rem;user-select:none}
+.mm-lib-item:hover{background:var(--accent-pale);border-color:var(--accent);color:var(--accent)}
+.mm-lib-item:active{cursor:grabbing;opacity:0.7}
+.mm-lib-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* ===== DUEL ===== */
+.duel-tab{font-size:13px;font-weight:500;padding:7px 18px;border:1px solid rgba(123,63,228,0.3);border-radius:20px;cursor:pointer;background:#fff;color:#7B3FE4;transition:all 0.2s;font-family:'Jost',sans-serif}
+.duel-tab.active,.duel-tab:hover{background:#7B3FE4;color:#fff;border-color:#7B3FE4}
+.duel-time-btn{font-size:12px;padding:5px 14px;border:1px solid rgba(123,63,228,0.3);border-radius:20px;cursor:pointer;background:#fff;color:#7B3FE4;transition:all 0.2s;font-family:'Jost',sans-serif}
+.duel-time-btn.active{background:#7B3FE4;color:#fff;border-color:#7B3FE4}
+
+@media(max-width:768px){
+  .region-grid{grid-template-columns:1fr}
+  .info-grid{grid-template-columns:1fr}
+  header{padding:0 0.8rem}
+  nav{padding:0 0.8rem}
+  .content{padding:1.2rem 1rem 3rem}
+  #home-page .hero h1{font-size:36px}
+  .lb-stats-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== ONBOARDING ===== -->
+<div id="onboarding">
+  <div class="ob-box">
+    <div class="ob-logo">TMO I</div>
+    <div class="ob-sub">Terapia Manual Ortopédica — Bienvenido</div>
+    <div class="ob-avatar-row">
+      <div class="ob-avatar" id="ob-avatar" onclick="document.getElementById('ob-file').click()">
+        <span id="ob-avatar-emoji">👤</span>
+        <img id="ob-avatar-img" src="" alt="" style="display:none">
+      </div>
+    </div>
+    <input type="file" id="ob-file" accept="image/*" style="display:none" onchange="loadAvatar(event)">
+    <button class="ob-gen-btn" onclick="generateAvatar()">✨ Generar avatar IA</button>
+    <div class="ob-field">
+      <label>Nombre / Apellido o Pseudo</label>
+      <input type="text" id="ob-name" placeholder="Tu nombre o pseudónimo..." maxlength="32">
+    </div>
+    <button class="ob-start-btn" onclick="startApp()">Entrar al curso →</button>
+    <div class="ob-anon" onclick="startAppAnon()">Entrar de forma anónima</div>
+  </div>
+</div>
+
+<!-- ===== PAUSE BLOCKER ===== -->
+<div id="pause-blocker">
+  <div class="pb-logo">⏸</div>
+  <div class="pb-title">Pausa activa</div>
+  <div class="pb-subtitle">Tu cerebro lo necesita — vuelve en</div>
+  <div class="pb-timer" id="pb-timer">15:00</div>
+  <div class="pb-tip" id="pb-tip">💧 Bebe un vaso de agua</div>
+  <button class="pb-skip" onclick="skipPause()">Saltar pausa (no recomendado)</button>
+</div>
+
+<header>
+  <div class="logo"><span>TMO</span> I</div>
+  <div class="header-center">
+    <div class="user-pill" onclick="showPage('leaderboard')" title="Ver mis estadísticas">
+      <div class="user-avatar" id="header-avatar">👤</div>
+      <span id="header-name">Estudiante</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="pomo-ring-wrap" onclick="openSettings()" title="Pomodoro">
+      <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="22" cy="22" r="18" stroke="rgba(196,168,130,0.13)" stroke-width="3.2"/>
+        <circle id="pomo-ring-track" cx="22" cy="22" r="18" stroke="#C4A882" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="113.1" stroke-dashoffset="0" style="transition:stroke-dashoffset 0.5s linear,stroke 0.3s"/>
+      </svg>
+      <div class="pomo-ring-label" id="pomo-ring-label">
+        <span class="pomo-ring-time" id="pomo-ring-time">45:00</span>
+        <span class="pomo-ring-session" id="pomo-ring-session">focus</span>
+      </div>
+    </div>
+    <button class="settings-btn" onclick="openSettings()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<nav id="main-nav">
+  <button class="tab active" onclick="showPage('home')">🏠 Inicio</button>
+  <button class="tab tab-cine" onclick="showPage('cinesiterapia')">⚡ Cinesiterapia</button>
+  <button class="tab" onclick="showPage('mindmap')">🧠 Mind Map</button>
+  <button class="tab" onclick="showPage('resumen-es')">💪 M. Superior</button>
+  <button class="tab" onclick="showPage('resumen-ei')">🦵 M. Inferior</button>
+  <button class="tab" onclick="showPage('resumen-col')">🦴 Columna</button>
+  <button class="tab" onclick="showPage('qcm1')">📝 QCM 1</button>
+  <button class="tab" onclick="showPage('qcm2')">📝 QCM 2</button>
+  <button class="tab" onclick="showPage('qcm3')">📝 QCM 3</button>
+  <button class="tab" onclick="showPage('duel')" style="color:#7B3FE4;font-weight:600">⚔️ Duelo</button>
+  <button class="tab" onclick="showPage('leaderboard')">🏆 Clasificación</button>
+</nav>
+
+
+<!-- ===== HOME PAGE ===== -->
+<div id="home-page" class="page active">
+  <div class="content">
+    <div class="hero">
+      <h1>Terapia Manual<br><em>Ortopédica I</em></h1>
+      <p>Resúmenes · Mind Maps · QCMs · Pomodoro · Clasificación</p>
+    </div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;text-align:center;margin-bottom:0.3rem">Selecciona una región para comparar</h2>
+    <p style="text-align:center;font-size:13px;color:var(--warm-gray);margin-bottom:1.5rem">Haz clic en una carta para desplegar la tabla comparativa</p>
+    <div class="region-grid">
+      <div class="region-card" onclick="toggleRegion('es')"><div class="region-icon">💪</div><h3>Miembro Superior</h3><p>Cintura escapular, codo, antebrazo, muñeca y dedos.</p></div>
+      <div class="region-card" onclick="toggleRegion('ei')"><div class="region-icon">🦵</div><h3>Miembro Inferior</h3><p>Cadera, rodilla, tobillo y pie.</p></div>
+      <div class="region-card" onclick="toggleRegion('col')"><div class="region-icon">🦴</div><h3>Columna Vertebral</h3><p>Cervical superior/inferior, dorsal, lumbar, sacro.</p></div>
+    </div>
+    <div id="detail-es" class="region-detail-panel">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;margin:1.5rem 0 0.3rem">Miembro Superior — Comparativa</h3><div class="divider"></div>
+      <div style="overflow-x:auto"><table class="compare-table"><thead><tr><th>Articulación</th><th>Tipo</th><th>Movimientos</th><th>Músculos</th><th>Técnica</th></tr></thead><tbody>
+        <tr><td class="label-col">Esterno-costo-clavicular</td><td>Doble encaje recíproco</td><td>Ant-Post, rotación clav.</td><td><span class="muscle-tag">ECM</span><span class="muscle-tag">Trapecio</span><span class="muscle-tag">Escalenos</span></td><td>MPS caudal/ventral/dorso-caudal</td></tr>
+        <tr><td class="label-col">Acromio-clavicular</td><td>Artrodia</td><td>Plano ant-post, rot. axial</td><td><span class="muscle-tag">Deltoides</span><span class="muscle-tag">Trapecio</span></td><td>MPS ventral/dorsal, apertura ant.</td></tr>
+        <tr><td class="label-col">Escápulo-torácica</td><td>Sisarcosis</td><td>Craneal/caudal, basculación</td><td><span class="muscle-tag">Serrato ant.</span><span class="muscle-tag">Romboides</span></td><td>MPS caudal/craneal/basculación</td></tr>
+        <tr><td class="label-col">Gleno-humeral</td><td>Enartrosis (multiaxial)</td><td>Flex/Ext, Abd/Add, RI/RE</td><td><span class="muscle-tag">Manguito rotadores</span><span class="muscle-tag">Deltoides</span><span class="muscle-tag">Bíceps</span></td><td>Tracción eje cuello, MPE vent/dors/caud</td></tr>
+        <tr><td class="label-col">Húmero-cubital</td><td>Troclear (1 eje)</td><td>Flex/Ext</td><td><span class="muscle-tag">Braquial ant.</span><span class="muscle-tag">Bíceps</span><span class="muscle-tag">Tríceps</span></td><td>Tracción diafisaria, MPE dorsal/ventral</td></tr>
+        <tr><td class="label-col">Radio-cubital sup/inf</td><td>Trocoide</td><td>Pronosupinación</td><td><span class="muscle-tag">Pronador redondo</span><span class="muscle-tag">Supinador corto</span></td><td>MPS prono/supinación</td></tr>
+        <tr><td class="label-col">Radio-carpiana</td><td>Condílea (2 ejes)</td><td>Flex/Ext, dev. rad/cub</td><td><span class="muscle-tag">Flex/ext carpo</span><span class="muscle-tag">Abd pulgar</span></td><td>MPS flex/ext/desviaciones</td></tr>
+      </tbody></table></div>
+    </div>
+    <div id="detail-ei" class="region-detail-panel">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;margin:1.5rem 0 0.3rem">Miembro Inferior — Comparativa</h3><div class="divider"></div>
+      <div style="overflow-x:auto"><table class="compare-table"><thead><tr><th>Articulación</th><th>Tipo</th><th>Movimientos</th><th>Músculos</th><th>Técnica</th></tr></thead><tbody>
+        <tr><td class="label-col">Coxofemoral</td><td>Enartrosis (estable)</td><td>Flex/Ext, Abd/Add, RI/RE</td><td><span class="muscle-tag">Glúteos</span><span class="muscle-tag">Iliopsoas</span><span class="muscle-tag">Piramidal</span></td><td>Tracción eje cuello/caudal, MPE vent/dors</td></tr>
+        <tr><td class="label-col">Fémoro-tibial</td><td>Bicondílea / Troclear</td><td>Flex/Ext, RI/RE</td><td><span class="muscle-tag">Cuádriceps</span><span class="muscle-tag">Isquiotibiales</span><span class="muscle-tag">Poplíteo</span></td><td>MPS flex/ext, MPE dorsal</td></tr>
+        <tr><td class="label-col">Fémoro-patelar</td><td>Artrodia</td><td>Deslizamiento patelar</td><td><span class="muscle-tag">Cuádriceps (vasto med/lat)</span></td><td>MPS craneal/caudal, medial/lateral</td></tr>
+        <tr><td class="label-col">Tibio-tarsiana</td><td>Troclear (1 eje)</td><td>Flex dorsal / plantar</td><td><span class="muscle-tag">Tibial ant.</span><span class="muscle-tag">Sóleo</span><span class="muscle-tag">Gemelos</span></td><td>Tracción diafisaria, MPS FD/FP</td></tr>
+        <tr><td class="label-col">Subastragalina</td><td>Trocoide (eje Henke)</td><td>Pronación/Supinación</td><td><span class="muscle-tag">Peroneo lat.</span><span class="muscle-tag">Tibial post.</span></td><td>MPS prono/supinación</td></tr>
+        <tr><td class="label-col">Chopart</td><td>Condílea (2 ejes)</td><td>Flex/Ext + Pron/Sup</td><td><span class="muscle-tag">Tibial ant/post</span><span class="muscle-tag">Peroneo largo</span></td><td>MPS supinación/pronación</td></tr>
+      </tbody></table></div>
+    </div>
+    <div id="detail-col" class="region-detail-panel">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;margin:1.5rem 0 0.3rem">Columna — Comparativa</h3><div class="divider"></div>
+      <div style="overflow-x:auto"><table class="compare-table"><thead><tr><th>Segmento</th><th>Vértebras</th><th>Particularidades</th><th>Movimiento principal</th><th>Músculos</th></tr></thead><tbody>
+        <tr><td class="label-col">Cervical superior C0-C2</td><td>Atlas, Axis</td><td>Sin cuerpo (C1). Dens (C2). Atlantoaxial trocoide.</td><td>Rotación (~50% total)</td><td><span class="muscle-tag">Recto post. mayor/menor</span><span class="muscle-tag">Oblicuo sup/inf</span></td></tr>
+        <tr><td class="label-col">Cervical inferior C3-C7</td><td>5 vértebras</td><td>Art. Luschka. Apóf. bífidas C3-C6. Foramen transverso.</td><td>Flex/Ext + Inclinaciones</td><td><span class="muscle-tag">Escalenos</span><span class="muscle-tag">ECM</span><span class="muscle-tag">Multífido</span></td></tr>
+        <tr><td class="label-col">Dorsal T1-T12</td><td>12 vértebras</td><td>Carilla costal. Apóf. esp. larga oblicua. Bloqueada por costillas.</td><td>Rotación (principal)</td><td><span class="muscle-tag">Iliocostal</span><span class="muscle-tag">Rotadores</span></td></tr>
+        <tr><td class="label-col">Lumbar L1-L5</td><td>5 vértebras</td><td>Cuerpo grande. Art. plano sagital → bloquea rotación.</td><td>Flex/Ext (principal)</td><td><span class="muscle-tag">Psoas mayor</span><span class="muscle-tag">Cuadrado lumbar</span></td></tr>
+      </tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CINESITERAPIA PAGE ===== -->
+<div id="cinesiterapia-page" class="page">
+  <div class="content">
+    <div class="cine-hero">
+      <h1>⚡ Cinesiterapia Pasiva</h1>
+      <p>Fundamentos teóricos · Tipos de movilización · Biomecánica · Reglas de oro</p>
+    </div>
+    <div class="cine-progress">
+      <div class="cine-progress-text">Progreso</div>
+      <div class="cine-progress-bar"><div class="cine-progress-fill" id="cine-fill"></div></div>
+      <div class="cine-progress-count" id="cine-count">0 / 6</div>
+    </div>
+    <div class="cine-section">
+      <div class="cine-section-header"><span class="cine-num">01</span><h3>Definición y Objetivos</h3></div>
+      <div class="cine-section-body">
+        <div class="cine-key-row">
+          <div class="cine-key"><div class="ck-label">Definición</div><div class="ck-val">Movimiento producido por fuerza externa, sin contracción activa del paciente</div></div>
+          <div class="cine-key"><div class="ck-label">Agentes</div><div class="ck-val">Fisioterapeuta · aparato · gravedad · miembro sano del propio paciente</div></div>
+          <div class="cine-key"><div class="ck-label">Indicaciones</div><div class="ck-val">Reducción fuerza/movilidad · post-cirugía · dolor agudo · espasticidad</div></div>
+        </div>
+        <ul class="cine-list">
+          <li><strong>Finalidades (verdaderas):</strong> Conservar/aumentar RA · Evitar retracción capsular · Mantener tropismo · Reducir hipertonía · Estimular receptores · Disminuir dolor · Elongar contracturas</li>
+          <li><strong>Finalidad FALSA (examen):</strong> "Estabilizar articulaciones" — NO es finalidad de la cinesiterapia pasiva</li>
+          <li><strong>También falsa:</strong> "Mantener la atrofia muscular"</li>
+        </ul>
+      </div>
+    </div>
+    <div class="chapter-done-card" id="done-c-1" onclick="markDone('c',1)">
+      <div class="chapter-done-left"><div class="chapter-done-icon" id="icon-c-1">📖</div><div class="chapter-done-text"><strong>Cap. 1 — Definición y Objetivos</strong><p id="txt-c-1">Haz clic cuando hayas terminado este capítulo</p></div></div>
+      <button class="chapter-done-btn" id="btn-c-1">Marcar hecho ✓</button>
+    </div>
+    <div class="cine-section">
+      <div class="cine-section-header"><span class="cine-num">02</span><h3>Tipos de Movilizaciones Pasivas</h3></div>
+      <div class="cine-section-body">
+        <table class="cine-table"><thead><tr><th>Tipo</th><th>Abrev.</th><th>Características</th><th>Aplicación</th></tr></thead><tbody>
+          <tr><td class="lc">Moviliz. Pasiva Simple</td><td>MPS</td><td>Ritmo vivo · Dentro del RA disponible · T1+T2+T3=T4</td><td>Mantener movilidad existente</td></tr>
+          <tr><td class="lc">Moviliz. Pasiva Estiramiento</td><td>MPE</td><td>Sin tiempos fijos · Más allá del límite articular</td><td>Ganar amplitud de movimiento</td></tr>
+          <tr><td class="lc">Moviliz. Pasiva Funcional</td><td>MPF</td><td>Presas grandes + palancas largas · Varias articulaciones</td><td>Movimientos globales</td></tr>
+          <tr><td class="lc">MP Analítica</td><td>MPA</td><td>Presas cortas + palancas cortas · Una articulación</td><td>Precisión articular</td></tr>
+          <tr><td class="lc">Tracción</td><td>—</td><td>Separación superficies · eje · T2>T3>T1 (T4 variable)</td><td>Descoaptación · analgesia</td></tr>
+        </tbody></table>
+        <ul class="cine-list">
+          <li><strong>Regla MPE:</strong> Se fija articulación PROXIMAL la mayor parte del tiempo</li>
+          <li><strong>MPF vs MPA:</strong> MPF → grandes palancas, varias art. · MPA → cortas, articulación única</li>
+        </ul>
+      </div>
+    </div>
+    <div class="chapter-done-card" id="done-c-2" onclick="markDone('c',2)">
+      <div class="chapter-done-left"><div class="chapter-done-icon" id="icon-c-2">📖</div><div class="chapter-done-text"><strong>Cap. 2 — Tipos de Movilizaciones</strong><p id="txt-c-2">Haz clic cuando hayas terminado este capítulo</p></div></div>
+      <button class="chapter-done-btn" id="btn-c-2">Marcar hecho ✓</button>
+    </div>
+    <div class="cine-section">
+      <div class="cine-section-header"><span class="cine-num">03</span><h3>Tiempos T1 — T4</h3></div>
+      <div class="cine-section-body">
+        <div class="cine-key-row">
+          <div class="cine-key"><div class="ck-label">T1 — Iniciación</div><div class="ck-val">Toma de contacto y preparación del movimiento</div></div>
+          <div class="cine-key"><div class="ck-label">T2 — Mantenimiento</div><div class="ck-val">Posición de trabajo (más largo en MPS)</div></div>
+          <div class="cine-key"><div class="ck-label">T3 — Relaje</div><div class="ck-val">Retorno progresivo a posición inicial</div></div>
+          <div class="cine-key"><div class="ck-label">T4 — Reposo</div><div class="ck-val">Pausa entre repeticiones — T4 = T1+T2+T3</div></div>
+        </div>
+        <ul class="cine-list">
+          <li><strong>MPS:</strong> T1+T2+T3 → T4 = T1+T2+T3</li>
+          <li><strong>Tracciones:</strong> T2 > T3 > T1 (T4 variable)</li>
+          <li><strong>MPE:</strong> Sin tiempos definidos — fuerza progresiva sin esquema temporal</li>
+          <li><strong>Ritmo MPS:</strong> Vivo en general · Más lento en rodilla (flexión)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="chapter-done-card" id="done-c-3" onclick="markDone('c',3)">
+      <div class="chapter-done-left"><div class="chapter-done-icon" id="icon-c-3">📖</div><div class="chapter-done-text"><strong>Cap. 3 — Tiempos T1-T4</strong><p id="txt-c-3">Haz clic cuando hayas terminado este capítulo</p></div></div>
+      <button class="chapter-done-btn" id="btn-c-3">Marcar hecho ✓</button>
+    </div>
+    <div class="cine-section">
+      <div class="cine-section-header"><span class="cine-num">04</span><h3>Tipos Articulares</h3></div>
+      <div class="cine-section-body">
+        <table class="cine-table"><thead><tr><th>Tipo</th><th>Ejes</th><th>Movimientos</th><th>Ejemplos</th></tr></thead><tbody>
+          <tr><td class="lc">Enartrosis</td><td>3 (multiaxial)</td><td>Flex/Ext + Abd/Add + RI/RE</td><td>Gleno-humeral, Coxofemoral</td></tr>
+          <tr><td class="lc">Condílea</td><td>2</td><td>Flex/Ext + Abd/Add</td><td>Radio-carpiana, MCF, Chopart</td></tr>
+          <tr><td class="lc">Troclear</td><td>1</td><td>Flexión / Extensión</td><td>Húmero-cubital, Tibio-tarsiana</td></tr>
+          <tr><td class="lc">Trocoide</td><td>1 (rotación)</td><td>Rotación axial</td><td>Radio-cubitales, Subastragalina</td></tr>
+          <tr><td class="lc">Artrodia (plana)</td><td>Deslizamiento</td><td>Planos mínimos</td><td>Acromio-clavicular, Lisfranc</td></tr>
+          <tr><td class="lc">Doble encaje recíproco</td><td>2 + rotación</td><td>Ant-post + rotaciones</td><td>Esterno-costo-clavicular</td></tr>
+          <tr><td class="lc">Sisarcosis</td><td>Funcional</td><td>Deslizamiento muscular</td><td>Escápulo-torácica</td></tr>
+        </tbody></table>
+        <ul class="cine-list">
+          <li><strong>Ley cóncava/convexa:</strong> Si convexa → deslizamiento opuesto al movimiento. Si cóncava → mismo sentido</li>
+          <li><strong>Roll vs. Slide:</strong> En articulaciones congruentes van en sentidos opuestos</li>
+        </ul>
+      </div>
+    </div>
+    <div class="chapter-done-card" id="done-c-4" onclick="markDone('c',4)">
+      <div class="chapter-done-left"><div class="chapter-done-icon" id="icon-c-4">📖</div><div class="chapter-done-text"><strong>Cap. 4 — Tipos Articulares</strong><p id="txt-c-4">Haz clic cuando hayas terminado este capítulo</p></div></div>
+      <button class="chapter-done-btn" id="btn-c-4">Marcar hecho ✓</button>
+    </div>
+    <div class="cine-section">
+      <div class="cine-section-header"><span class="cine-num">05</span><h3>Patrón Motor y Biomecánica</h3></div>
+      <div class="cine-section-body">
+        <div class="cine-key-row">
+          <div class="cine-key"><div class="ck-label">Patrón motor</div><div class="ck-val">Cómo activa el SNC un músculo: cuáles, orden, intensidad, duración</div></div>
+          <div class="cine-key"><div class="ck-label">Braquial anterior</div><div class="ck-val">Patrón motor = flexión húmero-cubital</div></div>
+          <div class="cine-key"><div class="ck-label">Plano sagital</div><div class="ck-val">Flex/Ext — eje frontal</div></div>
+          <div class="cine-key"><div class="ck-label">Plano frontal</div><div class="ck-val">Abd/Add — eje sagital</div></div>
+        </div>
+        <ul class="cine-list">
+          <li><strong>Plano transversal:</strong> Rotaciones RI/RE — eje vertical</li>
+          <li><strong>Piramidal:</strong> Estiramiento → ADD + Flexión + RI de cadera</li>
+          <li><strong>Cápsula posterior EH:</strong> Estirar → MPE caudal + ADD horizontal</li>
+        </ul>
+      </div>
+    </div>
+    <div class="chapter-done-card" id="done-c-5" onclick="markDone('c',5)">
+      <div class="chapter-done-left"><div class="chapter-done-icon" id="icon-c-5">📖</div><div class="chapter-done-text"><strong>Cap. 5 — Patrón Motor</strong><p id="txt-c-5">Haz clic cuando hayas terminado este capítulo</p></div></div>
+      <button class="chapter-done-btn" id="btn-c-5">Marcar hecho ✓</button>
+    </div>
+    <div class="cine-section">
+      <div class="cine-section-header"><span class="cine-num">06</span><h3>Contraindicaciones y Reglas de Oro</h3></div>
+      <div class="cine-section-body">
+        <div class="cine-key-row">
+          <div class="cine-key"><div class="ck-label">Contraindicaciones abs.</div><div class="ck-val">Fractura reciente · infección articular · tromboflebitis · tumores óseos</div></div>
+          <div class="cine-key"><div class="ck-label">Precauciones</div><div class="ck-val">Osteoporosis severa · hiperlaxidad · dolor agudo · osteosíntesis reciente</div></div>
+        </div>
+        <ul class="cine-list">
+          <li><strong>Regla 1:</strong> Controlar estado del paciente durante toda la maniobra</li>
+          <li><strong>Regla 2:</strong> Reposo 5–10 min tras manipulaciones cervicales</li>
+          <li><strong>Regla 3:</strong> MPE siempre al final del RA disponible (MPS previa para encontrar límite)</li>
+          <li><strong>Regla 4:</strong> Usar peso corporal del fisio, no solo fuerza de brazos</li>
+          <li><strong>Regla 5:</strong> Distracción de Apley → tracción NO recomendada</li>
+          <li><strong>Regla 6:</strong> Cadera en decúbito prono solo si no hay problema de rodilla</li>
+        </ul>
+      </div>
+    </div>
+    <div class="chapter-done-card" id="done-c-6" onclick="markDone('c',6)">
+      <div class="chapter-done-left"><div class="chapter-done-icon" id="icon-c-6">📖</div><div class="chapter-done-text"><strong>Cap. 6 — Contraindicaciones y Reglas</strong><p id="txt-c-6">Haz clic cuando hayas terminado este capítulo</p></div></div>
+      <button class="chapter-done-btn" id="btn-c-6">Marcar hecho ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MIND MAP PAGE ===== -->
+<div id="mindmap-page" class="page">
+  <div style="max-width:1300px;margin:0 auto;padding:1.5rem 1.5rem 3rem">
+    <p class="page-subtitle">TERAPIA MANUAL ORTOPÉDICA I</p>
+    <h1 class="page-title">Mind Map — Constructor libre</h1>
+    <div class="divider"></div>
+    <p style="font-size:13px;color:var(--warm-gray);margin-bottom:1rem">Arrastra los nodos de la biblioteca hacia el canvas. Conecta nodos haciendo clic en uno y luego en otro. Doble clic en un nodo para editarlo.</p>
+
+    <div style="display:grid;grid-template-columns:260px 1fr;gap:1rem;height:580px">
+      <!-- LIBRARY PANEL -->
+      <div style="background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column">
+        <div style="background:var(--dark);color:var(--accent-light);padding:0.7rem 1rem;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase">📚 Biblioteca de nodos</div>
+        <div style="padding:0.6rem;border-bottom:1px solid var(--border)">
+          <input id="mm-search" placeholder="Buscar..." oninput="filterLib(this.value)" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:'Jost',sans-serif;background:var(--ivory);color:var(--dark)">
+        </div>
+        <div style="display:flex;gap:0.3rem;padding:0.5rem 0.6rem;flex-wrap:wrap;border-bottom:1px solid var(--border)">
+          <button class="mm-cat-btn active" onclick="filterCat('all',this)">Todos</button>
+          <button class="mm-cat-btn" onclick="filterCat('cine',this)">⚡ Cine</button>
+          <button class="mm-cat-btn" onclick="filterCat('es',this)">💪 ES</button>
+          <button class="mm-cat-btn" onclick="filterCat('ei',this)">🦵 EI</button>
+          <button class="mm-cat-btn" onclick="filterCat('col',this)">🦴 Col</button>
+        </div>
+        <div id="mm-library" style="flex:1;overflow-y:auto;padding:0.6rem;display:flex;flex-direction:column;gap:0.4rem"></div>
+        <div style="padding:0.6rem;border-top:1px solid var(--border)">
+          <div style="font-size:10px;color:var(--warm-gray);margin-bottom:0.4rem;letter-spacing:0.04em">NODO PERSONALIZADO</div>
+          <div style="display:flex;gap:0.4rem">
+            <input id="mm-custom-text" placeholder="Texto del nodo..." style="flex:1;padding:5px 8px;border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:'Jost',sans-serif">
+            <input type="color" id="mm-custom-color" value="#8B6B3D" style="width:32px;height:30px;border:1px solid var(--border);border-radius:5px;cursor:pointer;padding:2px">
+          </div>
+          <button onclick="addCustomNode()" style="width:100%;margin-top:0.4rem;padding:6px;background:var(--accent);color:#fff;border:none;border-radius:5px;font-size:12px;cursor:pointer;font-family:'Jost',sans-serif">+ Añadir al canvas</button>
+        </div>
+      </div>
+
+      <!-- CANVAS -->
+      <div style="position:relative;background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;z-index:5;display:flex;gap:0.4rem;padding:0.5rem;background:rgba(250,248,243,0.95);border-bottom:1px solid var(--border)">
+          <button class="mm-tool-btn" onclick="mmCanvasZoom(1.15)" title="Zoom +">🔍+</button>
+          <button class="mm-tool-btn" onclick="mmCanvasZoom(0.87)" title="Zoom −">🔍−</button>
+          <button class="mm-tool-btn" onclick="mmCanvasReset()" title="Reset vista">⊡</button>
+          <button class="mm-tool-btn" onclick="mmClearCanvas()" title="Limpiar">🗑</button>
+          <span style="font-size:10px;color:var(--warm-gray);align-self:center;margin-left:0.3rem" id="mm-mode-hint">Modo: mover · Clic en nodo → conectar</span>
+          <div style="margin-left:auto;display:flex;gap:0.3rem">
+            <select id="mm-conn-style" onchange="mmConnStyle=this.value" style="font-size:11px;border:1px solid var(--border);border-radius:4px;padding:3px 6px;background:#fff">
+              <option value="line">Línea recta</option>
+              <option value="curve">Curva</option>
+              <option value="elbow">Codo</option>
+            </select>
+            <input type="color" id="mm-conn-color" value="#8B6B3D" title="Color conexiones" style="width:28px;height:26px;border:1px solid var(--border);border-radius:4px;padding:1px;cursor:pointer">
+          </div>
+        </div>
+        <canvas id="mm-canvas" style="position:absolute;inset:0;width:100%;height:100%;cursor:default"></canvas>
+      </div>
+    </div>
+
+    <div class="chapter-done-card" id="done-m-1" onclick="markDone('m',1)" style="margin-top:1rem">
+      <div class="chapter-done-left"><div class="chapter-done-icon" id="icon-m-1">🧠</div><div class="chapter-done-text"><strong>Mind Map completado</strong><p id="txt-m-1">Haz clic cuando hayas construido y repasado tu mind map</p></div></div>
+      <button class="chapter-done-btn" id="btn-m-1">Marcar hecho ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESUMEN MIEMBRO SUPERIOR ===== -->
+<div id="resumen-es-page" class="page">
+  <div class="content">
+    <p class="page-subtitle">TERAPIA MANUAL ORTOPÉDICA I</p>
+    <h1 class="page-title">Miembro Superior</h1><div class="divider"></div>
+    <div class="section-tabs">
+      <button class="section-tab active" onclick="filterSection(this,'all')">Todas</button>
+      <button class="section-tab" onclick="filterSection(this,'cint')">Cintura escapular</button>
+      <button class="section-tab" onclick="filterSection(this,'codo')">Codo</button>
+      <button class="section-tab" onclick="filterSection(this,'mun')">Muñeca</button>
+      <button class="section-tab" onclick="filterSection(this,'ded')">Dedos</button>
+    </div>
+    <div class="articulacion-section" data-region="cint">
+      <div class="articulacion-header"><h3>I. Esterno-costo-clavicular</h3><span class="art-badge">Doble encaje recíproco</span></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="ib-label">Tipo articular</div><div class="ib-content">Doble encaje recíproco. Permite ant-post clavicular + grados rotación GH. Palpación: proximal clavícula + escotadura manubrio.</div></div>
+        <div class="info-block"><div class="ib-label">Músculos</div><div class="ib-content"><span class="muscle-tag">ECM</span><span class="muscle-tag">Trapecio</span><span class="muscle-tag">Escalenos</span><br><small>⚠️ Cabeza NO girada en contralateral</small></div></div>
+      </div>
+      <ul class="tecnica-list">
+        <li><strong>MPS caudal:</strong> Dec. supino. FIX peso tórax. PRESA 4d encima, pulgar debajo clavícula. MOVI caudal. FI: ABD GH.</li>
+        <li><strong>MPS ventral:</strong> PRESA 4d detrás, pulgar delante. MOVI ventral. FI: ABD horizontal EH.</li>
+        <li><strong>MPS dorso-caudal:</strong> Usar espiración. Pisiforme como apoyo.</li>
+      </ul>
+    </div>
+    <div class="articulacion-section" data-region="cint">
+      <div class="articulacion-header"><h3>II. Acromio-clavicular</h3><span class="art-badge">Artrodia</span></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="ib-label">Tipo articular</div><div class="ib-content">Artrodia (sinovial plana). Orientación ventral intracraneal. Trabajar al final del tratamiento para alcanzar 150–180° GH.</div></div>
+        <div class="info-block"><div class="ib-label">Músculos</div><div class="ib-content"><span class="muscle-tag">Deltoides</span><span class="muscle-tag">Trapecio</span><span class="muscle-tag">Serrato anterior</span></div></div>
+      </div>
+      <ul class="tecnica-list">
+        <li><strong>MPS ventral:</strong> FIX espina escápula. PRESA clavícula ant. FI: ABD horizontal EH.</li>
+        <li><strong>MPS dorsal:</strong> MOVI hacia dorsal. FI: ADD horizontal EH.</li>
+        <li><strong>Apertura anterior:</strong> Dec. lateral contralateral. FI: misma que MPS ventral ECC.</li>
+      </ul>
+    </div>
+    <div class="articulacion-section" data-region="cint">
+      <div class="articulacion-header"><h3>III. Escápulo-torácica</h3><span class="art-badge">Sisarcosis</span></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="ib-label">Tipo articular</div><div class="ib-content">Sisarcosis: no hay superficies articulares. Desliza VÍA serrato anterior y subescapular. ⚠️ No hay contacto directo costillas-escápula.</div></div>
+        <div class="info-block"><div class="ib-label">Músculos</div><div class="ib-content"><span class="muscle-tag">Serrato anterior</span><span class="muscle-tag">Subescapular</span><span class="muscle-tag">Romboides mayor/menor</span></div></div>
+      </div>
+      <ul class="tecnica-list">
+        <li><strong>3 presas caudales:</strong> Garra (borde int+ext), cuña (borde cubital), pinza (borde inferior).</li>
+        <li><strong>MPS craneal:</strong> FI: ext, ADD, RI de la GH.</li>
+        <li><strong>MPS caudal:</strong> FI: flex, ABD, RE de la GH.</li>
+      </ul>
+    </div>
+    <div class="articulacion-section" data-region="cint">
+      <div class="articulacion-header"><h3>IV. Gleno-humeral</h3><span class="art-badge">Enartrosis — multiaxial</span></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="ib-label">Tipo articular</div><div class="ib-content">Enartrosis (esférica). Multiaxial. Estabilizada por manguito rotadores + cab. larga bíceps.</div></div>
+        <div class="info-block"><div class="ib-label">Músculos</div><div class="ib-content"><span class="muscle-tag">Supraespinoso</span><span class="muscle-tag">Infraespinoso</span><span class="muscle-tag">Redondo menor (RE)</span><span class="muscle-tag">Subescapular (RI)</span><span class="muscle-tag">Deltoides</span></div></div>
+      </div>
+      <ul class="tecnica-list">
+        <li><strong>Tracción eje cuello:</strong> Dec. supino diagonal. FIX escápula. PRESA 1er esp. int. axila. MOVI: giro exterior.</li>
+        <li><strong>MPE ventral:</strong> Ganar ext → desliz. ventral + rodamiento dorsal.</li>
+        <li><strong>MPE dorsal:</strong> Ganar flex → desliz. dorsal + rodamiento ventral.</li>
+        <li><strong>MPE caudal:</strong> Estirar cápsula postero-inferior. + ADD horizontal.</li>
+      </ul>
+    </div>
+    <div class="articulacion-section" data-region="codo">
+      <div class="articulacion-header"><h3>V. Húmero-cubital</h3><span class="art-badge">Troclear — 1 eje</span></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="ib-label">Tipo articular</div><div class="ib-content">Troclear. 1 eje: flex/ext. Patrón motor braquial anterior: flexión HC.</div></div>
+        <div class="info-block"><div class="ib-label">Músculos</div><div class="ib-content"><span class="muscle-tag">Braquial anterior (flex)</span><span class="muscle-tag">Bíceps (flex+sup)</span><span class="muscle-tag">Tríceps (ext)</span></div></div>
+      </div>
+      <ul class="tecnica-list">
+        <li><strong>Tracción diafisaria:</strong> Codo 45° flex. PRESA antebrazo. MOVI: giro exterior eje diáfisis.</li>
+        <li><strong>MPE dorsal (ganar ext):</strong> Olecranon fuera camilla. Fuerza dorsal → tracción. FI: ganar ext+sup.</li>
+        <li><strong>MPE ventral (ganar flex):</strong> Dec. supino. FI: ganar flexión.</li>
+      </ul>
+    </div>
+    <div class="articulacion-section" data-region="codo">
+      <div class="articulacion-header"><h3>VI. Radio-cubitales</h3><span class="art-badge">Trocoide — pivote</span></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="ib-label">Tipo articular</div><div class="ib-content">Trocoide. 1 eje: pronosupinación. ⚠️ Es la radio-cubital, NO la HC, quien permite la pronosupinación.</div></div>
+        <div class="info-block"><div class="ib-label">Músculos</div><div class="ib-content"><span class="muscle-tag">Pronador redondo</span><span class="muscle-tag">Pronador cuadrado</span><span class="muscle-tag">Supinador corto</span><span class="muscle-tag">Bíceps (supinación)</span></div></div>
+      </div>
+      <ul class="tecnica-list">
+        <li><strong>MPS prono/supinación:</strong> Sedest., codo apoyado, antebrazo vertical. Doble presa 1/3 distal. Pronación: mano post abajo/mano ant delante. Supinación: inverso.</li>
+      </ul>
+    </div>
+    <div class="articulacion-section" data-region="mun">
+      <div class="articulacion-header"><h3>VII. Radio-carpiana</h3><span class="art-badge">Condílea — 2 ejes</span></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="ib-label">Tipo articular</div><div class="ib-content">Condílea. 2 ejes: flex/ext + dev. radial/cubital (=Abd/Add). Mediocarpiana muy estable, sigue RC.</div></div>
+        <div class="info-block"><div class="ib-label">Músculos</div><div class="ib-content"><span class="muscle-tag">Flex carpo rad/cub</span><span class="muscle-tag">Ext carpo rad/cub</span><span class="muscle-tag">Abd largo pulgar</span></div></div>
+      </div>
+      <ul class="tecnica-list">
+        <li><strong>MPS flex op.1:</strong> Sedest., antebrazo neutro. FIX 1/3 distal. PRESA mano int: 1er esp. int. proximal articulación. MOVI palmares. Ritmo vivo.</li>
+        <li><strong>MPS flex op.2:</strong> Codo apoyado como punto de giro.</li>
+        <li><strong>MPS ext, dev. radial/cubital:</strong> Lógica análoga.</li>
+      </ul>
+    </div>
+    <div class="articulacion-section" data-region="ded">
+      <div class="articulacion-header"><h3>VIII. MCF 4 últimos dedos</h3><span class="art-badge">Condílea — 2 ejes</span></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="ib-label">Tipo articular</div><div class="ib-content">Condílea. 2 ejes: flex/ext + Abd/Add. Mitad radial: antebrazo neutro. Mitad cubital: pronación perpendicular.</div></div>
+        <div class="info-block"><div class="ib-label">Músculos</div><div class="ib-content"><span class="muscle-tag">Lumbricales</span><span class="muscle-tag">Interóseos dorsales (ABD)</span><span class="muscle-tag">Interóseos palmares (ADD)</span></div></div>
+      </div>
+      <ul class="tecnica-list">
+        <li><strong>FIX:</strong> Cada metacarpiano. PRESA: Cada 1ª falange. Presas: subtermino-lateral, subterminal, termino-terminal.</li>
+        <li><strong>MPS flex/ext:</strong> Desplazar falange en sentido flex/ext (hasta 10° negativos). Ritmo vivo.</li>
+        <li><strong>Tracción + MPE ventral/dorsal:</strong> Tirar 1ª falange eje diafisario. Apertura cápsula.</li>
+      </ul>
+    </div>
+    <div class="chapter-done-card" id="done-es-1" onclick="markDone('es',1)">
+      <div class="chapter-done-left"><div class="chapter-done-icon" id="icon-es-1">💪</div><div class="chapter-done-text"><strong>Miembro Superior — Completado</strong><p id="txt-es-1">Haz clic cuando hayas revisado todas las articulaciones</p></div></div>
+      <button class="chapter-done-btn" id="btn-es-1">Marcar hecho ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESUMEN MIEMBRO INFERIOR ===== -->
+<div id="resumen-ei-page" class="page">
+  <div class="content">
+    <p class="page-subtitle">TERAPIA MANUAL ORTOPÉDICA I</p>
+    <h1 class="page-title">Miembro Inferior</h1><div class="divider"></div>
+    <div class="articulacion-section">
+      <div class="articulacion-header"><h3>I. Coxofemoral (Cadera)</h3><span class="art-badge">Enartrosis — estable</span></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="ib-label">Tipo articular</div><div class="ib-content">Enartrosis. Muy estable. Multiaxial: flex/ext, Abd/Add, RI/RE.</div></div>
+        <div class="info-block"><div class="ib-label">Músculos</div><div class="ib-content"><span class="muscle-tag">Glúteo mayor (ext)</span><span class="muscle-tag">Glúteo med/men (ABD)</span><span class="muscle-tag">Iliopsoas (flex)</span><span class="muscle-tag">Piramidal (RE → ADD+flex+RI)</span><span class="muscle-tag">Aductores</span></div></div>
+      </div>
+      <ul class="tecnica-list">
+        <li><strong>Tracción eje cuello:</strong> Dec. supino. CONTRAPRESA: tronco fisio en parte ext de rodilla. FI: descoaptación superior.</li>
+        <li><strong>MPE ventral:</strong> Ganar ext → desliz. ventral + rodamiento dorsal.</li>
+        <li><strong>MPE dorsal:</strong> Ganar flex → desliz. dorsal + rodamiento ventral.</li>
+        <li><strong>MPE ABD:</strong> Desliz. caudal + rodamiento craneal. MPE ADD: desliz. craneal + rod. caudal.</li>
+      </ul>
+    </div>
+    <div class="articulacion-section">
+      <div class="articulacion-header"><h3>II. Fémoro-tibial (Rodilla)</h3><span class="art-badge">Bicondílea / Troclear funcional</span></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="ib-label">Tipo articular</div><div class="ib-content">Bicondílea morfológica / Troclear funcional. 2 ejes: flex/ext + RI/RE. Meniscos: posterior en flex, anterior en ext.</div></div>
+        <div class="info-block"><div class="ib-label">Músculos</div><div class="ib-content"><span class="muscle-tag">Cuádriceps (ext)</span><span class="muscle-tag">Isquiotibiales (flex)</span><span class="muscle-tag">Poplíteo (RI)</span><span class="muscle-tag">Gemelos</span></div></div>
+      </div>
+      <ul class="tecnica-list">
+        <li><strong>MPS flex op.1:</strong> Dec. supino. PRESA cara ext + talón. Combinar flex rod + flex cadera.</li>
+        <li><strong>MPS ext:</strong> Cojín detrás 1/3 prox tibia ⚠️ NO detrás rodilla.</li>
+        <li><strong>MPE dorsal (ganar flex):</strong> Limit. 50° → primero MPS, luego MPE. Tibia desliza posterior.</li>
+        <li><strong>Distracción Apley:</strong> ⚠️ Tracción NO recomendada.</li>
+      </ul>
+    </div>
+    <div class="articulacion-section">
+      <div class="articulacion-header"><h3>III. Tibio-tarsiana (Tobillo)</h3><span class="art-badge">Troclear — 1 eje</span></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="ib-label">Tipo articular</div><div class="ib-content">Troclear. 1 eje: FD / FP. No es tracción pura: implica mínimamente coxofemoral, fémoro-tibial, calc-astrag.</div></div>
+        <div class="info-block"><div class="ib-label">Músculos</div><div class="ib-content"><span class="muscle-tag">Tibial ant. (FD)</span><span class="muscle-tag">Ext. dedos/hallux</span><span class="muscle-tag">Sóleo + Gemelos (FP)</span><span class="muscle-tag">Tibial post.</span></div></div>
+      </div>
+      <ul class="tecnica-list">
+        <li><strong>Tracción diafisaria:</strong> EEII: ABD+flex+RE cadera, rodilla 90°. FIX: fémur. PRESA: cuello astrágalo. ⚠️ No comprimir bajo maléolos.</li>
+        <li><strong>MPS flex dorsal:</strong> Dec. supino, rodilla 90°. FIX: calcáneo (fulcro). Empujar tibia cráneo-dorsal. ⚠️ Suavidad.</li>
+      </ul>
+    </div>
+    <div class="articulacion-section">
+      <div class="articulacion-header"><h3>IV. Subastragalina</h3><span class="art-badge">Trocoide — eje de Henke</span></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="ib-label">Tipo articular</div><div class="ib-content">Trocoide posterior. Eje de Henke. 1 eje: pron/sup. Si limitada afecta tibio-tarsiana.</div></div>
+        <div class="info-block"><div class="ib-label">Músculos</div><div class="ib-content"><span class="muscle-tag">Peroneo lat. largo (eversión)</span><span class="muscle-tag">Peroneo lat. corto</span><span class="muscle-tag">Tibial posterior (inversión)</span></div></div>
+      </div>
+      <ul class="tecnica-list">
+        <li><strong>MPS pron/sup:</strong> Dec. prono, rodilla 90°. FIX: cuello astrágalo. PRESA: inf calcáneo. ⚠️ Pulgar NO interviene.</li>
+      </ul>
+    </div>
+    <div class="articulacion-section">
+      <div class="articulacion-header"><h3>V. Chopart</h3><span class="art-badge">Condílea — 2 ejes</span></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="ib-label">Tipo articular</div><div class="ib-content">Condílea. 2 ejes: flex/ext + pron/sup. Eje gravitacional. Astrágalo+calc ↔ escafoides+cuboides.</div></div>
+        <div class="info-block"><div class="ib-label">Músculos</div><div class="ib-content"><span class="muscle-tag">Tibial ant/post</span><span class="muscle-tag">Peroneo largo (eversión)</span><span class="muscle-tag">Abd hallux</span></div></div>
+      </div>
+      <ul class="tecnica-list">
+        <li><strong>MPS supinación:</strong> Dec. prono, rodilla 45°. FIX: calcáneo. PRESA: navicular. MOVI: navicular dorsal + cuboides plantar.</li>
+        <li><strong>MPS pronación:</strong> FIX: astrágalo. PRESA: cuboides. Inverso.</li>
+      </ul>
+    </div>
+    <div class="chapter-done-card" id="done-ei-1" onclick="markDone('ei',1)">
+      <div class="chapter-done-left"><div class="chapter-done-icon" id="icon-ei-1">🦵</div><div class="chapter-done-text"><strong>Miembro Inferior — Completado</strong><p id="txt-ei-1">Haz clic cuando hayas revisado todas las articulaciones</p></div></div>
+      <button class="chapter-done-btn" id="btn-ei-1">Marcar hecho ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESUMEN COLUMNA ===== -->
+<div id="resumen-col-page" class="page">
+  <div class="content">
+    <p class="page-subtitle">TERAPIA MANUAL ORTOPÉDICA I</p>
+    <h1 class="page-title">Columna Vertebral</h1><div class="divider"></div>
+    <div class="articulacion-section">
+      <div class="articulacion-header"><h3>Cervical Superior (C0-C2)</h3><span class="art-badge">Atlas + Axis</span></div>
+      <div class="info-grid">
+        <div class="info-block"><div class="ib-label">Características</div><div class="ib-content">C1 (Atlas): sin cuerpo, arco ant/post. C2 (Axis): dens odontoides. Atlantoaxial: trocoide. Cervical sup rectifica excesos de cervical inf.</div></div>
+        <div class="info-block"><div class="ib-label">Músculos</div><div class="ib-content"><span class="muscle-tag">Recto post. mayor/menor</span><span class="muscle-tag">Oblicuo sup/inf</span><span class="muscle-tag">Largo del cuello</span></div></div>
+      </div>
+      <ul class="tecnica-list">
+        <li><strong>MPS flex op.1:</strong> Dec. supino, cabeza cabezal. PRESA occipital + frente. MOVI: occipital craneal + frente caudal.</li>
+        <li><strong>MPS ext op.1:</strong> PRESA occipital (neutralidad) + borde cubital ángulo mandíbula. MOVI: occ. ventral + mandíbula craneal.</li>
+        <li><strong>MPS inclinaciones:</strong> Cráneo fuera camilla. Palma ahuecada (no pabellón auditivo). ⚠️ Reposo 5–10 min tras manipular.</li>
+      </ul>
+    </div>
+    <div class="articulacion-section">
+      <div class="articulacion-header"><h3>Tipos de Vértebras</h3><span class="art-badge">Clasificación</span></div>
+      <table class="compare-table" style="margin-top:0">
+        <thead><tr><th>Segmento</th><th>N°</th><th>Particularidades</th><th>Movimiento</th></tr></thead>
+        <tbody>
+          <tr><td class="label-col">Cervical C0-C2</td><td>Atlas+Axis</td><td>Sin cuerpo (C1). Dens (C2). Art. trocoide.</td><td>Rotación ~50%</td></tr>
+          <tr><td class="label-col">Cervical C3-C7</td><td>5</td><td>Art. Luschka. Apóf. bífidas. Foramen transverso.</td><td>Flex/Ext + inclin.</td></tr>
+          <tr><td class="label-col">Dorsal T1-T12</td><td>12</td><td>Carilla costal. Apóf. esp. larga oblicua.</td><td>Rotación (principal)</td></tr>
+          <tr><td class="label-col">Lumbar L1-L5</td><td>5</td><td>Cuerpo grande. Art. plano sagital → bloquea rotación.</td><td>Flex/Ext (principal)</td></tr>
+          <tr><td class="label-col">Sacro/Cóccix</td><td>5 fus.+4</td><td>Art. sacroilíaca. Nutación/contranutación.</td><td>Nutación</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="articulacion-section">
+      <div class="articulacion-header"><h3>Principios Generales TMO</h3><span class="art-badge">Reglas</span></div>
+      <ul class="tecnica-list">
+        <li><strong>PP/PF/FIJ/FI:</strong> Posición Paciente / Posición Fisio / Fijación / Finalidad</li>
+        <li><strong>Regla MPE:</strong> Fijar articulación PROXIMAL la mayor parte del tiempo</li>
+        <li><strong>MPF:</strong> Presas grandes + palancas largas + varias articulaciones</li>
+        <li><strong>MPA:</strong> Presas cortas + palancas cortas + articulación única</li>
+        <li><strong>T4 = T1+T2+T3 (MPS) · Tracciones: T2>T3>T1 · MPE: sin tiempos</strong></li>
+      </ul>
+    </div>
+    <div class="chapter-done-card" id="done-col-1" onclick="markDone('col',1)">
+      <div class="chapter-done-left"><div class="chapter-done-icon" id="icon-col-1">🦴</div><div class="chapter-done-text"><strong>Columna Vertebral — Completado</strong><p id="txt-col-1">Haz clic cuando hayas revisado la columna vertebral</p></div></div>
+      <button class="chapter-done-btn" id="btn-col-1">Marcar hecho ✓</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== QCM PAGES ===== -->
+<div id="qcm1-page" class="page"><div class="content">
+  <div class="qcm-header"><div><h2>QCM 1 — Teórico</h2><p>Cinesiterapia, tipos articulares, tiempos</p></div><div style="text-align:right"><div class="qcm-score-badge" id="score1">— <span>/ 10</span></div></div></div>
+  <div id="q1-container"></div>
+  <div class="qcm-btn-row"><button class="btn-secondary" onclick="resetQCM(1)">Reiniciar</button><button class="btn-primary" onclick="corregirQCM(1)">Corregir</button></div>
+  <div class="chapter-done-card" id="done-qcm-1" onclick="markDone('qcm',1)">
+    <div class="chapter-done-left"><div class="chapter-done-icon" id="icon-qcm-1">📝</div><div class="chapter-done-text"><strong>QCM 1 completado</strong><p id="txt-qcm-1">Haz clic después de completar y revisar este examen</p></div></div>
+    <button class="chapter-done-btn" id="btn-qcm-1">Marcar hecho ✓</button>
+  </div>
+</div></div>
+
+<div id="qcm2-page" class="page"><div class="content">
+  <div class="qcm-header"><div><h2>QCM 2 — Práctico</h2><p>Técnicas, posiciones, presas</p></div><div style="text-align:right"><div class="qcm-score-badge" id="score2">— <span>/ 10</span></div></div></div>
+  <div id="q2-container"></div>
+  <div class="qcm-btn-row"><button class="btn-secondary" onclick="resetQCM(2)">Reiniciar</button><button class="btn-primary" onclick="corregirQCM(2)">Corregir</button></div>
+  <div class="chapter-done-card" id="done-qcm-2" onclick="markDone('qcm',2)">
+    <div class="chapter-done-left"><div class="chapter-done-icon" id="icon-qcm-2">📝</div><div class="chapter-done-text"><strong>QCM 2 completado</strong><p id="txt-qcm-2">Haz clic después de completar y revisar este examen</p></div></div>
+    <button class="chapter-done-btn" id="btn-qcm-2">Marcar hecho ✓</button>
+  </div>
+</div></div>
+
+<div id="qcm3-page" class="page"><div class="content">
+  <div class="qcm-header"><div><h2>QCM 3 — Mixto</h2><p>Combinación teórico-práctica</p></div><div style="text-align:right"><div class="qcm-score-badge" id="score3">— <span>/ 10</span></div></div></div>
+  <div id="q3-container"></div>
+  <div class="qcm-btn-row"><button class="btn-secondary" onclick="resetQCM(3)">Reiniciar</button><button class="btn-primary" onclick="corregirQCM(3)">Corregir</button></div>
+  <div class="chapter-done-card" id="done-qcm-3" onclick="markDone('qcm',3)">
+    <div class="chapter-done-left"><div class="chapter-done-icon" id="icon-qcm-3">📝</div><div class="chapter-done-text"><strong>QCM 3 completado</strong><p id="txt-qcm-3">Haz clic después de completar y revisar este examen</p></div></div>
+    <button class="chapter-done-btn" id="btn-qcm-3">Marcar hecho ✓</button>
+  </div>
+</div></div>
+
+<!-- ===== DUEL PAGE ===== -->
+<div id="duel-page" class="page"><div class="content">
+  <div style="background:linear-gradient(135deg,#3A1F8A 0%,#7B3FE4 100%);border-radius:14px;padding:1.5rem 2rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between">
+    <div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;color:#fff">⚔️ Duelos &amp; Biblioteca</h2>
+      <p style="font-size:13px;color:rgba(255,255,255,0.55);margin-top:3px">Reta a un amigo · Los duelos completados se guardan para todos</p>
+    </div>
+    <div id="api-status-dot" title="Estado del servidor" style="width:12px;height:12px;border-radius:50%;background:#888;flex-shrink:0;margin-left:1rem"></div>
+  </div>
+
+  <!-- TABS -->
+  <div style="display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap">
+    <button class="duel-tab active" onclick="duelTab('create',this)">➕ Crear duelo</button>
+    <button class="duel-tab" onclick="duelTab('join',this)">🔗 Unirse</button>
+    <button class="duel-tab" onclick="duelTab('library',this)">📚 Biblioteca</button>
+    <button class="duel-tab" onclick="duelTab('results',this)">📊 Mis duelos</button>
+  </div>
+
+  <!-- CREATE -->
+  <div id="duel-create">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:1rem">Configurar el duelo</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+        <div>
+          <label style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:0.4rem">Banco de preguntas</label>
+          <select id="duel-bank" style="width:100%;padding:8px 12px;border:1px solid var(--border-strong);border-radius:6px;font-family:'Jost',sans-serif;font-size:13px;background:#fff">
+            <option value="1">QCM 1 — Teórico</option>
+            <option value="2">QCM 2 — Práctico</option>
+            <option value="3">QCM 3 — Mixto</option>
+            <option value="all">Todos mezclados</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:0.4rem">Nº de preguntas</label>
+          <select id="duel-count" style="width:100%;padding:8px 12px;border:1px solid var(--border-strong);border-radius:6px;font-family:'Jost',sans-serif;font-size:13px;background:#fff">
+            <option value="5">5 preguntas</option>
+            <option value="10" selected>10 preguntas</option>
+            <option value="15">15 preguntas</option>
+            <option value="20">Todas (20)</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:1.2rem">
+        <label style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:0.4rem">Tiempo por pregunta</label>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+          <button class="duel-time-btn active" onclick="selectTime(this,30)">⚡ 30s</button>
+          <button class="duel-time-btn" onclick="selectTime(this,60)">🕐 60s</button>
+          <button class="duel-time-btn" onclick="selectTime(this,90)">🕑 90s</button>
+          <button class="duel-time-btn" onclick="selectTime(this,0)">♾ Sin límite</button>
+        </div>
+      </div>
+      <button onclick="createDuel()" class="duel-create-btn" style="width:100%;padding:12px;background:linear-gradient(135deg,#3A1F8A,#7B3FE4);color:#fff;border:none;border-radius:8px;font-family:'Jost',sans-serif;font-size:15px;font-weight:600;cursor:pointer">⚔️ Crear duelo y generar enlace</button>
+    </div>
+    <div id="duel-link-box" style="display:none;background:#fff;border:2px solid #7B3FE4;border-radius:12px;padding:1.5rem">
+      <div style="font-size:12px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#7B3FE4;margin-bottom:0.5rem">✅ Duelo creado en el servidor</div>
+      <div style="margin-bottom:1rem;font-size:13px;color:var(--charcoal)">Comparte el <strong>código</strong> o el <strong>enlace completo</strong>. Tu adversario solo necesita el código para unirse.</div>
+      <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.8rem">
+        <div id="duel-code-display" style="font-family:monospace;font-size:26px;font-weight:700;color:#7B3FE4;background:#F0EBF9;padding:10px 20px;border-radius:8px;letter-spacing:0.2em"></div>
+        <button onclick="copyDuelCode()" style="padding:8px 14px;background:#7B3FE4;color:#fff;border:none;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Jost',sans-serif">📋 Copiar código</button>
+      </div>
+      <div style="background:var(--ivory);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:11px;color:var(--warm-gray);word-break:break-all;margin-bottom:0.8rem;font-family:monospace" id="duel-url-display"></div>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+        <button onclick="copyDuelUrl()" style="padding:8px 14px;background:var(--dark);color:var(--accent-light);border:none;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Jost',sans-serif">🔗 Copiar enlace</button>
+        <button onclick="startDuelAsCreator()" style="padding:8px 14px;background:var(--cine-color);color:#fff;border:none;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Jost',sans-serif">▶ Empezar yo ahora</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOIN -->
+  <div id="duel-join" style="display:none">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:0.8rem">Unirse a un duelo</h3>
+      <div style="display:flex;gap:0.7rem;margin-bottom:1rem">
+        <input id="duel-join-code" placeholder="Código TMO-XXXX" maxlength="8" style="flex:1;padding:10px 14px;border:1px solid var(--border-strong);border-radius:8px;font-family:'Jost',monospace;font-size:20px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#7B3FE4;text-align:center">
+        <button onclick="joinDuel()" class="duel-join-btn" style="padding:10px 20px;background:linear-gradient(135deg,#3A1F8A,#7B3FE4);color:#fff;border:none;border-radius:8px;font-family:'Jost',sans-serif;font-size:14px;font-weight:600;cursor:pointer">Unirse ⚔️</button>
+      </div>
+      <div id="duel-join-info" style="display:none;background:var(--accent-pale);border:1px solid var(--border);border-radius:8px;padding:1rem">
+        <div style="font-size:14px;font-weight:600;margin-bottom:0.3rem;color:var(--dark)" id="duel-join-title"></div>
+        <div style="font-size:12px;color:var(--warm-gray)" id="duel-join-meta"></div>
+        <button onclick="startDuelAsJoiner()" style="margin-top:0.8rem;padding:9px 22px;background:#7B3FE4;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Jost',sans-serif">▶ Empezar el duelo</button>
+      </div>
+      <div id="duel-join-error" style="display:none;color:var(--rust);font-size:13px;margin-top:0.5rem"></div>
+    </div>
+  </div>
+
+  <!-- LIBRARY -->
+  <div id="duel-library" style="display:none">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+        <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--dark)">📚 Biblioteca de duelos</h3>
+        <button onclick="renderDuelLibrary()" style="font-size:12px;padding:5px 12px;background:var(--accent-pale);color:var(--accent);border:1px solid var(--border);border-radius:6px;cursor:pointer;font-family:'Jost',sans-serif">↺ Actualizar</button>
+      </div>
+      <p style="font-size:13px;color:var(--warm-gray);margin-bottom:1rem">Cuando dos jugadores terminan un duelo, las preguntas se guardan aquí para que todo el mundo pueda practicar.</p>
+      <div id="library-list"><div style="text-align:center;padding:2rem;color:var(--warm-gray)">⏳ Cargando biblioteca...</div></div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="duel-results" style="display:none">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:1rem;color:var(--dark)">📊 Mis duelos</h3>
+      <div id="duel-results-list"></div>
+    </div>
+  </div>
+
+  <!-- GAME -->
+  <div id="duel-game" style="display:none;margin-top:1rem">
+    <div style="background:linear-gradient(135deg,#3A1F8A,#7B3FE4);border-radius:12px;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+      <div style="color:#fff">
+        <div style="font-size:11px;opacity:0.6;letter-spacing:0.05em" id="dg-mode-label">DUELO</div>
+        <div style="font-size:18px;font-weight:600" id="dg-title">Pregunta 1 de 10</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:32px;font-weight:700;color:#fff;font-family:monospace" id="dg-timer">30</div>
+        <div style="font-size:10px;opacity:0.55;color:#fff">seg</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.15);border-radius:8px;padding:8px 16px;text-align:center">
+        <div style="font-size:24px;font-weight:700;color:#fff" id="dg-score">0</div>
+        <div style="font-size:10px;opacity:0.6;color:#fff">PTS</div>
+      </div>
+    </div>
+    <div style="height:5px;background:rgba(123,63,228,0.2);border-radius:3px;margin-bottom:1.2rem;overflow:hidden">
+      <div id="dg-progress-bar" style="height:100%;background:#7B3FE4;border-radius:3px;transition:width 0.3s"></div>
+    </div>
+    <div class="question-card">
+      <div class="q-number" id="dg-q-num">Pregunta 1</div>
+      <div class="q-text" id="dg-q-text"></div>
+      <ul class="q-options" id="dg-options"></ul>
+    </div>
+  </div>
+
+  <!-- FINAL -->
+  <div id="duel-final" style="display:none;margin-top:1rem">
+    <div style="background:#fff;border:2px solid #7B3FE4;border-radius:14px;padding:2rem;text-align:center">
+      <div style="font-size:56px;margin-bottom:0.5rem" id="df-emoji">🏆</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:30px;margin-bottom:0.4rem;color:#7B3FE4" id="df-title">¡Completado!</h2>
+      <div style="font-size:44px;font-weight:700;color:#7B3FE4;margin:0.4rem 0" id="df-score"></div>
+      <div style="font-size:13px;color:var(--warm-gray);margin-bottom:1.2rem" id="df-detail"></div>
+      <div id="df-compare" style="background:var(--accent-pale);border-radius:10px;padding:1rem;margin-bottom:1.2rem;display:none">
+        <div id="df-compare-content"></div>
+      </div>
+      <button onclick="duelTab('create',document.querySelector('.duel-tab'))" style="padding:10px 22px;background:linear-gradient(135deg,#3A1F8A,#7B3FE4);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Jost',sans-serif">Nuevo duelo</button>
+    </div>
+  </div>
+
+</div></div>
+
+
+
+
+<!-- ===== LEADERBOARD PAGE ===== -->
+<div id="leaderboard-page" class="page"><div class="content">
+  <div class="lb-header">
+    <div><h2>🏆 Clasificación</h2><p>Historial de sesiones y estadísticas personales</p></div>
+    <div style="text-align:right"><div style="font-size:36px;color:var(--accent-light)" id="lb-user-avatar-big">👤</div><div style="font-size:13px;color:rgba(196,168,130,0.6)" id="lb-username-big">—</div></div>
+  </div>
+  <div class="lb-stats-row">
+    <div class="lb-stat-card"><div class="stat-num" id="lb-total-time">0h</div><div class="stat-label">Tiempo total en el sitio</div></div>
+    <div class="lb-stat-card"><div class="stat-num" id="lb-chapters-done">0</div><div class="stat-label">Capítulos completados</div></div>
+    <div class="lb-stat-card"><div class="stat-num" id="lb-score-avg">—</div><div class="stat-label">Media QCM (último intento)</div></div>
+  </div>
+  <div class="lb-my-section">
+    <h3>📈 Historial de sesiones (últimas 10)</h3>
+    <div class="lb-hist-bar" id="lb-hist-bar"></div>
+    <div style="font-size:11px;color:var(--warm-gray);margin-top:0.5rem">Minutos de estudio por sesión</div>
+  </div>
+  <div style="display:flex;gap:0.5rem;margin-bottom:1rem;flex-wrap:wrap">
+    <button class="lb-filter active" onclick="lbShowTab('sessions',this)">📅 Sesiones</button>
+    <button class="lb-filter" onclick="lbShowTab('chapters',this)">📚 Capítulos</button>
+    <button class="lb-filter" onclick="lbShowTab('scores',this)">🎯 Puntuaciones QCM</button>
+  </div>
+  <div id="lb-sessions-view"><table class="lb-table" id="lb-sessions-table"><thead><tr><th>#</th><th>Fecha</th><th>Duración</th><th>Capítulos hechos</th><th>Sorpresas acertadas</th></tr></thead><tbody id="lb-sessions-body"></tbody></table><div class="no-lb-data" id="lb-no-sessions" style="display:none">Sin sesiones registradas aún. ¡Empieza a estudiar!</div></div>
+  <div id="lb-chapters-view" style="display:none"><table class="lb-table"><thead><tr><th>Módulo</th><th>Capítulo</th><th>Estado</th><th>Fecha</th></tr></thead><tbody id="lb-chapters-body"></tbody></table></div>
+  <div id="lb-scores-view" style="display:none"><table class="lb-table"><thead><tr><th>QCM</th><th>Puntuación</th><th>Barra</th><th>Fecha</th></tr></thead><tbody id="lb-scores-body"></tbody></table></div>
+  <div style="margin-top:2rem;text-align:right"><button class="btn-secondary" onclick="if(confirm('¿Borrar todos los datos? Esta acción no se puede deshacer.'))clearAllData()">🗑 Borrar mis datos</button></div>
+</div></div>
+
+<!-- ===== SURPRISE QUIZ ===== -->
+<div class="surprise-overlay" id="surprise-overlay">
+  <div class="surprise-box">
+    <div class="surprise-badge">⚡ Examen sorpresa</div>
+    <h3 id="sq-title">Pregunta rápida</h3>
+    <div class="sq-source" id="sq-source">— Capítulo 1</div>
+    <div class="sq-timer-bar-wrap"><div class="sq-timer-bar" id="sq-timer-bar" style="width:100%"></div></div>
+    <div class="sq-question" id="sq-question"></div>
+    <ul class="sq-options" id="sq-options"></ul>
+    <div class="sq-feedback" id="sq-feedback"></div>
+    <div class="sq-actions">
+      <button class="sq-skip" onclick="closeSurprise(false)">Saltar</button>
+      <button class="btn-primary" id="sq-next-btn" onclick="closeSurprise(true)" style="display:none">Continuar →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SETTINGS MODAL ===== -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal-box">
+    <h2 class="modal-title">⚙ Configuración</h2>
+    <p class="modal-subtitle">Pomodoro · Examen sorpresa</p>
+    <div class="pomo-presets">
+      <div class="pomo-preset selected" onclick="selectPreset(this,25,5)" id="preset-classic"><strong>Clásico</strong><small>25/5 min</small></div>
+      <div class="pomo-preset" onclick="selectPreset(this,45,15)" id="preset-deep"><strong>Profundo</strong><small>45/15 min</small></div>
+      <div class="pomo-preset" onclick="selectPreset(this,50,10)" id="preset-ultra"><strong>Ultra</strong><small>50/10 min</small></div>
+      <div class="pomo-preset" onclick="selectPreset(this,90,20)" id="preset-long"><strong>Long</strong><small>90/20 min</small></div>
+      <div class="pomo-preset" onclick="selectPreset(this,0,0)" id="preset-custom"><strong>Custom</strong><small>sliders</small></div>
+    </div>
+    <div class="pomo-slider-group"><label>Concentración <span id="focus-val">45 min</span></label><input type="range" id="set-focus" min="5" max="120" step="5" value="45" oninput="onSliderChange()"></div>
+    <div class="pomo-slider-group"><label>Pausa <span id="pause-val">15 min</span></label><input type="range" id="set-pause" min="1" max="60" step="1" value="15" oninput="onSliderChange()"></div>
+    <div style="border-top:1px solid var(--border);margin:1rem 0;"></div>
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--cine-color);margin-bottom:0.6rem">⚡ Examen sorpresa</p>
+    <div class="pomo-slider-group"><label>Intervalo <span id="surprise-val" style="color:var(--cine-color)">10 min</span></label><input type="range" id="set-surprise" min="0" max="60" step="5" value="10" oninput="onSurpriseChange()"></div>
+    <p style="font-size:11px;color:var(--warm-gray);margin-top:-0.3rem">0 = desactivado · Solo aparece en temas ya completados</p>
+    <div class="modal-actions"><button class="btn-secondary" onclick="closeSettings()">Cancelar</button><button class="btn-primary" onclick="saveSettings()">Guardar</button></div>
+  </div>
+</div>
+
+<div class="notif-banner" id="notif-banner"></div>
+
+<script>
+// ===== STORAGE HELPERS =====
+const LS = {
+  get: k => { try { return JSON.parse(localStorage.getItem('tmo_'+k)) } catch(e){ return null } },
+  set: (k,v) => localStorage.setItem('tmo_'+k, JSON.stringify(v)),
+  del: k => localStorage.removeItem('tmo_'+k)
+};
+
+// ===== USER PROFILE =====
+let currentUser = { name:'Estudiante', avatar:'👤', avatarType:'emoji' };
+let sessionStart = Date.now();
+let sessionSurpriseCorrect = 0;
+let sessionSurpriseTotal = 0;
+
+const AVATAR_EMOJIS = ['🦁','🐯','🦊','🐺','🦅','🦉','🐙','🦈','🦋','🌊','🔥','⚡','🎯','🏆','💎','🌙','☀️','🌿','🍀','🦄'];
+
+function generateAvatar() {
+  const emoji = AVATAR_EMOJIS[Math.floor(Math.random()*AVATAR_EMOJIS.length)];
+  document.getElementById('ob-avatar-emoji').textContent = emoji;
+  document.getElementById('ob-avatar-img').style.display = 'none';
+  document.getElementById('ob-avatar-emoji').style.display = 'block';
+  currentUser.avatar = emoji; currentUser.avatarType = 'emoji';
+}
+
+function loadAvatar(e) {
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = document.getElementById('ob-avatar-img');
+    img.src = ev.target.result; img.style.display = 'block';
+    document.getElementById('ob-avatar-emoji').style.display = 'none';
+    currentUser.avatar = ev.target.result; currentUser.avatarType = 'img';
+  };
+  reader.readAsDataURL(file);
+}
+
+function startApp() {
+  const name = document.getElementById('ob-name').value.trim() || 'Estudiante';
+  currentUser.name = name;
+  const saved = LS.get('user');
+  if(!saved || saved.name !== name) {
+    LS.set('user', currentUser);
+  } else {
+    currentUser = saved;
+  }
+  finishOnboarding();
+}
+
+function startAppAnon() {
+  currentUser = { name:'Anónimo', avatar:'🕵️', avatarType:'emoji' };
+  LS.set('user', currentUser);
+  finishOnboarding();
+}
+
+function finishOnboarding() {
+  updateHeaderUser();
+  document.getElementById('onboarding').style.display = 'none';
+  sessionStart = Date.now();
+  startChrono();
+  startSurpriseTimer();
+  restoreChapters();
+  renderLB();
+}
+
+function updateHeaderUser() {
+  const ha = document.getElementById('header-avatar');
+  const hn = document.getElementById('header-name');
+  if(currentUser.avatarType === 'img') {
+    ha.innerHTML = `<img src="${currentUser.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`;
+  } else { ha.textContent = currentUser.avatar; }
+  hn.textContent = currentUser.name;
+  document.getElementById('lb-user-avatar-big').innerHTML = currentUser.avatarType==='img' ? `<img src="${currentUser.avatar}" style="width:48px;height:48px;border-radius:50%;object-fit:cover">` : currentUser.avatar;
+  document.getElementById('lb-username-big').textContent = currentUser.name;
+}
+
+// ===== NAVIGATION =====
+const PAGES = ['home','cinesiterapia','mindmap','resumen-es','resumen-ei','resumen-col','qcm1','qcm2','qcm3','duel','leaderboard'];
+function showPage(id) {
+  PAGES.forEach(p => document.getElementById(p+'-page').classList.remove('active'));
+  document.getElementById(id+'-page').classList.add('active');
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', PAGES[i]===id));
+  window.scrollTo(0,0);
+  if(id==='mindmap') setTimeout(initMindMap,50);
+  if(id==='leaderboard') renderLB();
+}
+
+// ===== REGION TOGGLE =====
+function toggleRegion(r) {
+  const panel = document.getElementById('detail-'+r);
+  const cards = document.querySelectorAll('.region-card');
+  const keys = ['es','ei','col'];
+  const idx = keys.indexOf(r);
+  const isVis = panel.classList.contains('visible');
+  keys.forEach((x,i) => { document.getElementById('detail-'+x).classList.remove('visible'); cards[i].classList.remove('selected'); });
+  if(!isVis) { panel.classList.add('visible'); cards[idx].classList.add('selected'); setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'start'}),50); }
+}
+function filterSection(btn, key) {
+  document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.articulacion-section').forEach(s => s.style.display = (key==='all'||s.dataset.region===key)?'':'none');
+}
+
+// ===== POMODORO =====
+let focusMs=45*60000, pauseMs=15*60000, mode='focus', modeElapsed=0, chronoInterval=null, lastTick=null, sessionCount=0;
+const CIRC = 2*Math.PI*18;
+
+function fmt(ms) { const s=Math.floor(ms/1000),m=Math.floor(s/60),sec=s%60; return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0'); }
+
+function updateRing() {
+  const total = mode==='focus'?focusMs:pauseMs;
+  const rem = Math.max(0, total-modeElapsed);
+  const off = CIRC*(1-rem/total);
+  const ring=document.getElementById('pomo-ring-track');
+  const tEl=document.getElementById('pomo-ring-time');
+  const sEl=document.getElementById('pomo-ring-session');
+  const lEl=document.getElementById('pomo-ring-label');
+  ring.style.strokeDashoffset=off;
+  tEl.textContent=fmt(rem);
+  sEl.textContent=mode==='focus'?('S'+(sessionCount+1)):'pausa';
+  ring.style.stroke=mode==='pause'?'#E59B7A':'#C4A882';
+  lEl.classList.toggle('pause-mode',mode==='pause');
+  // Update pause blocker
+  if(mode==='pause') document.getElementById('pb-timer').textContent=fmt(rem);
+}
+
+function beep(f,d,delay=0) {
+  setTimeout(()=>{ try { const ctx=new(window.AudioContext||window.webkitAudioContext)(),o=ctx.createOscillator(),g=ctx.createGain(); o.connect(g);g.connect(ctx.destination); o.frequency.value=f; g.gain.setValueAtTime(0.4,ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+d); o.start(); o.stop(ctx.currentTime+d); } catch(e){} }, delay);
+}
+
+function showNotif(msg,dur=4000) {
+  const el=document.getElementById('notif-banner');
+  el.textContent=msg; el.style.display='block';
+  clearTimeout(el._t); el._t=setTimeout(()=>el.style.display='none',dur);
+}
+
+const PAUSE_TIPS = ['💧 Bebe un vaso de agua','🚶 Levántate y camina 5 minutos','🌬️ Respira profundo, 4 tiempos','👀 Mira al horizonte, relaja los ojos','💬 Habla con alguien cerca de ti','📖 Lee una página de un libro cualquiera','🌿 Sal a tomar aire fresco','🙅 Mira una pared sin pensar en nada','🤸 Estira cuello y hombros','☕ Tómate algo caliente sin pantallas'];
+let tipInterval = null;
+
+function showPauseBlocker() {
+  const blocker = document.getElementById('pause-blocker');
+  blocker.classList.add('visible');
+  document.getElementById('pb-tip').textContent = PAUSE_TIPS[Math.floor(Math.random()*PAUSE_TIPS.length)];
+  tipInterval = setInterval(()=>{ document.getElementById('pb-tip').textContent = PAUSE_TIPS[Math.floor(Math.random()*PAUSE_TIPS.length)]; }, 10000);
+}
+
+function hidePauseBlocker() {
+  document.getElementById('pause-blocker').classList.remove('visible');
+  if(tipInterval) clearInterval(tipInterval);
+}
+
+function skipPause() {
+  hidePauseBlocker();
+  mode='focus'; modeElapsed=0;
+  updateRing();
+  showNotif('⚡ Pausa saltada (no recomendado) — ¡tómate un momento de todas formas!');
+}
+
+function startChrono() {
+  if(chronoInterval) clearInterval(chronoInterval);
+  lastTick = Date.now();
+  chronoInterval = setInterval(()=>{
+    const now=Date.now(); modeElapsed+=now-lastTick; lastTick=now;
+    const total = mode==='focus'?focusMs:pauseMs;
+    if(modeElapsed>=total) {
+      if(mode==='focus') {
+        sessionCount++; beep(880,0.7); beep(660,0.5,600); beep(880,0.6,1200);
+        showNotif('⏸ Sesión '+sessionCount+' completada — ¡Pausa!',6000);
+        mode='pause'; modeElapsed=0;
+        showPauseBlocker();
+        saveSession();
+      } else {
+        hidePauseBlocker();
+        beep(660,0.5); beep(880,0.7,700);
+        showNotif('▶ ¡Fin de la pausa — a concentrarse!',5000);
+        mode='focus'; modeElapsed=0;
+      }
+    }
+    updateRing();
+  },500);
+}
+
+function resetChrono() {
+  if(chronoInterval) clearInterval(chronoInterval);
+  mode='focus'; modeElapsed=0; sessionCount=0;
+  updateRing(); startChrono();
+}
+
+function openSettings() {
+  const fm=Math.round(focusMs/60000), pm=Math.round(pauseMs/60000), sv=Math.round(surpriseIntervalMs/60000);
+  document.getElementById('set-focus').value=fm; document.getElementById('focus-val').textContent=fm+' min';
+  document.getElementById('set-pause').value=pm; document.getElementById('pause-val').textContent=pm+' min';
+  document.getElementById('set-surprise').value=sv; document.getElementById('surprise-val').textContent=sv===0?'Desactivado':sv+' min';
+  highlightPreset(fm,pm);
+  document.getElementById('settings-modal').classList.add('visible');
+}
+function closeSettings(){ document.getElementById('settings-modal').classList.remove('visible'); }
+function onSliderChange(){ const f=+document.getElementById('set-focus').value,p=+document.getElementById('set-pause').value; document.getElementById('focus-val').textContent=f+' min'; document.getElementById('pause-val').textContent=p+' min'; highlightPreset(f,p); }
+function onSurpriseChange(){ const v=+document.getElementById('set-surprise').value; document.getElementById('surprise-val').textContent=v===0?'Desactivado':v+' min'; }
+function selectPreset(el,f,p){ document.querySelectorAll('.pomo-preset').forEach(x=>x.classList.remove('selected')); el.classList.add('selected'); if(f>0){document.getElementById('set-focus').value=f;document.getElementById('set-pause').value=p;document.getElementById('focus-val').textContent=f+' min';document.getElementById('pause-val').textContent=p+' min';} }
+function highlightPreset(f,p){ const map={'preset-classic':[25,5],'preset-deep':[45,15],'preset-ultra':[50,10],'preset-long':[90,20]}; document.querySelectorAll('.pomo-preset').forEach(x=>x.classList.remove('selected')); const found=Object.entries(map).find(([,v])=>v[0]===f&&v[1]===p); document.getElementById(found?found[0]:'preset-custom').classList.add('selected'); }
+function saveSettings(){
+  focusMs=+document.getElementById('set-focus').value*60000;
+  pauseMs=+document.getElementById('set-pause').value*60000;
+  surpriseIntervalMs=+document.getElementById('set-surprise').value*60000;
+  closeSettings(); resetChrono(); startSurpriseTimer();
+  showNotif('✓ Guardado: '+Math.round(focusMs/60000)+'min / '+Math.round(pauseMs/60000)+'min',3500);
+}
+
+// ===== CHAPTERS DONE TRACKING =====
+let chaptersDone = {};   // { 'c-1': true, 'es-1': true, ... }
+const TOTAL_BY_SECTION = { c:6, m:1, es:1, ei:1, col:1, qcm:3 };
+
+function markDone(section, num) {
+  const key = section+'-'+num;
+  if(chaptersDone[key]) return;
+  chaptersDone[key] = { date: new Date().toLocaleDateString('es-ES') };
+  LS.set('chapters', chaptersDone);
+
+  const card=document.getElementById('done-'+key);
+  const icon=document.getElementById('icon-'+key);
+  const txt=document.getElementById('txt-'+key);
+  const btn=document.getElementById('btn-'+key);
+  if(card) card.classList.add('done');
+  if(icon) icon.textContent='✅';
+  if(txt) txt.textContent='¡Completado! Registrado el '+chaptersDone[key].date;
+  if(btn) btn.textContent='Completado ✓';
+
+  if(section==='c') {
+    const done = Object.keys(chaptersDone).filter(k=>k.startsWith('c-')).length;
+    const pct = Math.round(done/6*100);
+    document.getElementById('cine-fill').style.width=pct+'%';
+    document.getElementById('cine-count').textContent=done+' / 6';
+  }
+  showNotif('✅ Capítulo marcado — ¡Sigue así!',3000);
+  setTimeout(()=>launchSurpriseForSection(section, num), 1200);
+}
+
+function restoreChapters() {
+  const saved = LS.get('chapters');
+  if(!saved) return;
+  chaptersDone = saved;
+  Object.keys(chaptersDone).forEach(key=>{
+    const [s,n] = key.split('-');
+    const card=document.getElementById('done-'+key);
+    const icon=document.getElementById('icon-'+key);
+    const txt=document.getElementById('txt-'+key);
+    const btn=document.getElementById('btn-'+key);
+    if(card) card.classList.add('done');
+    if(icon) icon.textContent='✅';
+    if(txt && chaptersDone[key].date) txt.textContent='Completado el '+chaptersDone[key].date;
+    if(btn) btn.textContent='Completado ✓';
+  });
+  const cDone = Object.keys(chaptersDone).filter(k=>k.startsWith('c-')).length;
+  const pct = Math.round(cDone/6*100);
+  document.getElementById('cine-fill').style.width=pct+'%';
+  document.getElementById('cine-count').textContent=cDone+' / 6';
+}
+
+// ===== SURPRISE QUIZ =====
+let surpriseIntervalMs=10*60000, surpriseIntervalId=null;
+const SQ = {
+  'c': {
+    1:[{q:'¿Cuál es la finalidad FALSA de la cinesiterapia pasiva?',opts:['Disminuir el dolor','Estabilizar articulaciones','Elongar contracturas','Conservar recorrido articular'],correct:1,exp:'Estabilizar articulaciones NO es una finalidad real de la cinesiterapia pasiva.'},{q:'La cinesiterapia pasiva tiene como finalidad:',opts:['Producir contracción activa','Mantener la atrofia','Conservar el tropismo muscular','Estabilizar articulaciones'],correct:2,exp:'Conservar el tropismo muscular sí es una finalidad real de la cinesiterapia pasiva.'}],
+    2:[{q:'Las MPF se caracterizan por:',opts:['Presas cortas y palancas cortas','Presas grandes y palancas largas','Una sola articulación','Sin fijación'],correct:1,exp:'MPF → presas grandes + brazos de palanca largos + varias articulaciones.'},{q:'¿Qué va más allá del límite articular?',opts:['MPS','MPF','MPE','Tracción diafisaria'],correct:2,exp:'La MPE trabaja más allá del límite articular para ganar amplitud.'}],
+    3:[{q:'T4 en MPS equivale a:',opts:['T1×T2','T2+T3','T1+T2+T3','Solo T3'],correct:2,exp:'T4 (reposo) = T1+T2+T3.'},{q:'En tracciones el orden es:',opts:['T1>T2>T3','T2>T3>T1','T3>T2>T1','Todos iguales'],correct:1,exp:'En tracciones: T2>T3>T1. T4 es variable.'}],
+    4:[{q:'Articulación gleno-humeral es:',opts:['Artrodia','Troclear','Condílea','Enartrosis'],correct:3,exp:'Gleno-humeral = enartrosis (esférica), multiaxial.'},{q:'¿Cuántos ejes tiene una condílea?',opts:['1','2','3','Ninguno'],correct:1,exp:'Las condíleas tienen 2 ejes: flex/ext y Abd/Add.'}],
+    5:[{q:'Para estirar el piramidal:',opts:['ABD+ext+RE','ADD+flex+RI','Flex+RE pura','Ext+ADD'],correct:1,exp:'Piramidal es rotador externo → estirar en ADD+flex+RI.'},{q:'Patrón motor del braquial anterior:',opts:['Extensión codo','Pronosupinación','Flexión húmero-cubital','RE hombro'],correct:2,exp:'Braquial anterior → flexión húmero-cubital.'}],
+    6:[{q:'Reposo tras manipular cervicales:',opts:['1-2 min','5-10 min','20-30 min','No necesario'],correct:1,exp:'5–10 minutos de reposo tras manipulaciones cervicales.'},{q:'En Apley está contraindicado:',opts:['Compresión','RI','RE','Tracción'],correct:3,exp:'En Apley: tracción NO recomendada.'}]
+  },
+  'es': {
+    1:[{q:'La articulación escápulo-torácica es:',opts:['Artrodia','Enartrosis','Sisarcosis','Condílea'],correct:2,exp:'Sisarcosis: no hay superficies articulares; desliza vía serrato ant y subescapular.'},{q:'La radio-cubital permite:',opts:['Flex/ext','Pronosupinación','ABD/ADD','RI/RE'],correct:1,exp:'Las radio-cubitales (trocoide) permiten la pronosupinación.'},{q:'La gleno-humeral es:',opts:['Artrodia','Condílea','Enartrosis','Troclear'],correct:2,exp:'Enartrosis = esférica, multiaxial.'}]
+  },
+  'ei': {
+    1:[{q:'En flexión de cadera el deslizamiento es:',opts:['Ventral','Dorsal','Craneal','Caudal'],correct:1,exp:'Flex cadera: deslizamiento DORSAL + rodamiento VENTRAL.'},{q:'La subastragalina es:',opts:['Condílea','Artrodia','Trocoide','Troclear'],correct:2,exp:'Subastragalina = trocoide, eje de Henke.'},{q:'¿Qué NO se recomienda en Apley?',opts:['Compresión','RI','RE','Tracción'],correct:3,exp:'Tracción no recomendada en Apley.'}]
+  },
+  'col': {
+    1:[{q:'En lumbar el movimiento principal es:',opts:['Rotación','Flex/ext','Abd/add','Nutación'],correct:1,exp:'Lumbar: articulares en plano sagital → flex/ext, bloquea rotación.'},{q:'C1 (Atlas) tiene:',opts:['Apófisis odontoides','Sin cuerpo vertebral','Carilla costal','Foramen transverso'],correct:1,exp:'C1 (Atlas) NO tiene cuerpo vertebral.'},{q:'La atlantoaxial (C1-C2) es:',opts:['Condílea','Troclear','Trocoide','Artrodia'],correct:2,exp:'Atlantoaxial = trocoide: permite rotación axial ~50% de la rotación cervical total.'}]
+  },
+  'm': {
+    1:[{q:'¿Cuántas regiones cubre el mind map disponible?',opts:['2','3','4','5'],correct:2,exp:'Hay 4 mind maps: Miembro Superior, Inferior, Columna y Cinesiterapia.'},{q:'Los mind maps sirven para:',opts:['Memorizar párrafos','Síntesis visual de conceptos clave','Practicar técnicas manuales','Calcular tiempos'],correct:1,exp:'Los mind maps son herramientas de síntesis visual para retener lo esencial.'}]
+  },
+  'qcm': {
+    1:[{q:'¿Cuál es la finalidad FALSA de la cinesiterapia pasiva?',opts:['Disminuir dolor','Estabilizar articulaciones','Elongar contracturas','Mantener tropismo'],correct:1,exp:'Estabilizar articulaciones NO es una finalidad real.'},{q:'T4 = ?',opts:['T1×T2','T2+T3','T1+T2+T3','Solo T2'],correct:2,exp:'T4 = T1+T2+T3.'}],
+    2:[{q:'La gleno-humeral es:',opts:['Artrodia','Condílea','Enartrosis','Trocoide'],correct:2,exp:'Enartrosis: esférica, multiaxial.'},{q:'En tracción coxofemoral la contrapresión es con:',opts:['Mano en fémur','Ambas manos pie','Tronco fisio en rodilla ext.','Correa'],correct:2,exp:'Tronco del fisio en parte externa de la rodilla.'}],
+    3:[{q:'Lumbar: articulares en plano sagital → bloquea:',opts:['Flex/ext','Inclinaciones','Rotación','ABD'],correct:2,exp:'El plano sagital de las articulares lumbares bloquea la rotación.'},{q:'Chopart es de tipo:',opts:['Troclear','Trocoide','Enartrosis','Condílea'],correct:3,exp:'Chopart = condílea: 2 ejes (flex/ext + pron/sup).'}]
+  }
+};
+
+function launchSurpriseForSection(section, num) {
+  const bank = SQ[section] && SQ[section][num] ? SQ[section][num] : null;
+  if(!bank || bank.length===0) return;
+  openSurprise(bank[Math.floor(Math.random()*bank.length)], section, num, false);
+}
+
+function startSurpriseTimer() {
+  if(surpriseIntervalId) clearInterval(surpriseIntervalId);
+  if(surpriseIntervalMs===0) return;
+  surpriseIntervalId = setInterval(()=>{
+    const done = Object.keys(chaptersDone);
+    if(done.length===0) return;
+    const key = done[Math.floor(Math.random()*done.length)];
+    const [s,n] = key.split('-');
+    const bank = SQ[s]&&SQ[s][+n] ? SQ[s][+n] : null;
+    if(!bank) return;
+    openSurprise(bank[Math.floor(Math.random()*bank.length)], s, +n, true);
+  }, surpriseIntervalMs);
+}
+
+function openSurprise(q, section, num, isTimer) {
+  sessionSurpriseTotal++;
+  const overlay=document.getElementById('surprise-overlay');
+  document.getElementById('sq-title').textContent=isTimer?'¡Pregunta sorpresa! ¿Lo recuerdas?':'¡Verifica lo aprendido!';
+  document.getElementById('sq-source').textContent='📖 '+({c:'Cinesiterapia',es:'Miembro Superior',ei:'Miembro Inferior',col:'Columna',m:'Mind Maps',qcm:'QCM'}[section]||section)+' — Cap.'+num;
+  document.getElementById('sq-question').textContent=q.q;
+  document.getElementById('sq-feedback').classList.remove('visible');
+  document.getElementById('sq-next-btn').style.display='none';
+  const ol=document.getElementById('sq-options'); ol.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const li=document.createElement('li'),label=document.createElement('label');
+    label.id='sqo-'+i; label.innerHTML=`<input type="radio" name="sq" value="${i}" onchange="checkSq(${i},${q.correct},'${encodeURIComponent(q.exp)}')"> ${opt}`;
+    li.appendChild(label); ol.appendChild(li);
+  });
+  const bar=document.getElementById('sq-timer-bar');
+  bar.style.transition='none'; bar.style.width='100%';
+  setTimeout(()=>{ bar.style.transition='width 30s linear'; bar.style.width='0%'; },60);
+  overlay.classList.add('visible');
+}
+
+function checkSq(sel, corr, expEnc) {
+  const exp=decodeURIComponent(expEnc);
+  document.querySelectorAll('#sq-options label').forEach((l,i)=>{ l.style.pointerEvents='none'; if(i===corr)l.classList.add('sq-correct'); else if(i===sel&&sel!==corr)l.classList.add('sq-wrong'); });
+  const fb=document.getElementById('sq-feedback');
+  fb.textContent=(sel===corr?'✓ ':'✗ ')+exp; fb.classList.add('visible');
+  document.getElementById('sq-next-btn').style.display='inline-block';
+  document.getElementById('sq-timer-bar').style.transition='none'; document.getElementById('sq-timer-bar').style.width='0%';
+  if(sel===corr) sessionSurpriseCorrect++;
+}
+
+function closeSurprise(correct) {
+  document.getElementById('surprise-overlay').classList.remove('visible');
+}
+
+// ===== MIND MAP — CANVAS NODE LIBRARY =====
+const MM_LIBRARY = [
+  // Cinesiterapia
+  {cat:'cine',text:'Cinesiterapia pasiva',color:'#D4620A'},{cat:'cine',text:'MPS',color:'#D4620A'},{cat:'cine',text:'MPE',color:'#D4620A'},{cat:'cine',text:'MPF',color:'#D4620A'},{cat:'cine',text:'MPA',color:'#D4620A'},{cat:'cine',text:'Tracción',color:'#D4620A'},
+  {cat:'cine',text:'T1 — Iniciación',color:'#A84A06'},{cat:'cine',text:'T2 — Mantenimiento',color:'#A84A06'},{cat:'cine',text:'T3 — Relaje',color:'#A84A06'},{cat:'cine',text:'T4 = T1+T2+T3',color:'#A84A06'},
+  {cat:'cine',text:'Enartrosis (3 ejes)',color:'#8B6B3D'},{cat:'cine',text:'Condílea (2 ejes)',color:'#8B6B3D'},{cat:'cine',text:'Troclear (1 eje)',color:'#8B6B3D'},{cat:'cine',text:'Trocoide (rotación)',color:'#8B6B3D'},{cat:'cine',text:'Artrodia',color:'#8B6B3D'},{cat:'cine',text:'Sisarcosis',color:'#8B6B3D'},
+  {cat:'cine',text:'Fix articulación PROXIMAL',color:'#5C7A4E'},{cat:'cine',text:'Ley cóncava/convexa',color:'#5C7A4E'},{cat:'cine',text:'Patrón motor',color:'#5C7A4E'},
+  // Miembro Superior
+  {cat:'es',text:'Gleno-humeral',color:'#4A6B8A'},{cat:'es',text:'ECC',color:'#4A6B8A'},{cat:'es',text:'Acromio-clavicular',color:'#4A6B8A'},{cat:'es',text:'Escápulo-torácica',color:'#4A6B8A'},
+  {cat:'es',text:'Húmero-cubital',color:'#7A4A6B'},{cat:'es',text:'Radio-cubital',color:'#7A4A6B'},{cat:'es',text:'Radio-carpiana',color:'#7A4A6B'},{cat:'es',text:'MCF',color:'#7A4A6B'},
+  {cat:'es',text:'Manguito rotadores',color:'#3A7A6A'},{cat:'es',text:'Deltoides',color:'#3A7A6A'},{cat:'es',text:'Bíceps braquial',color:'#3A7A6A'},{cat:'es',text:'Braquial anterior',color:'#3A7A6A'},{cat:'es',text:'Tríceps',color:'#3A7A6A'},
+  {cat:'es',text:'Flex / Ext',color:'#6A3A7A'},{cat:'es',text:'ABD / ADD',color:'#6A3A7A'},{cat:'es',text:'RI / RE',color:'#6A3A7A'},{cat:'es',text:'Pronosupinación',color:'#6A3A7A'},
+  // Miembro Inferior
+  {cat:'ei',text:'Coxofemoral',color:'#2E7D52'},{cat:'ei',text:'Fémoro-tibial',color:'#2E7D52'},{cat:'ei',text:'Fémoro-patelar',color:'#2E7D52'},{cat:'ei',text:'Tibio-tarsiana',color:'#2E7D52'},{cat:'ei',text:'Subastragalina',color:'#2E7D52'},{cat:'ei',text:'Chopart',color:'#2E7D52'},{cat:'ei',text:'Lisfranc',color:'#2E7D52'},
+  {cat:'ei',text:'Glúteo mayor',color:'#5C4A1E'},{cat:'ei',text:'Iliopsoas',color:'#5C4A1E'},{cat:'ei',text:'Piramidal (RE)',color:'#5C4A1E'},{cat:'ei',text:'Cuádriceps',color:'#5C4A1E'},{cat:'ei',text:'Isquiotibiales',color:'#5C4A1E'},{cat:'ei',text:'Poplíteo (RI)',color:'#5C4A1E'},
+  {cat:'ei',text:'Eje de Henke',color:'#8A6A3A'},{cat:'ei',text:'Flex dorsal / plantar',color:'#8A6A3A'},{cat:'ei',text:'Pron / Sup',color:'#8A6A3A'},
+  // Columna
+  {cat:'col',text:'C1 — Atlas',color:'#9B4A2C'},{cat:'col',text:'C2 — Axis (dens)',color:'#9B4A2C'},{cat:'col',text:'C3-C7 Luschka',color:'#9B4A2C'},{cat:'col',text:'T1-T12 dorsal',color:'#9B4A2C'},{cat:'col',text:'L1-L5 lumbar',color:'#9B4A2C'},{cat:'col',text:'Sacroilíaca',color:'#9B4A2C'},
+  {cat:'col',text:'Rotación ~50% (cervical)',color:'#6B4A8A'},{cat:'col',text:'Flex/Ext (lumbar)',color:'#6B4A8A'},{cat:'col',text:'Rotación (dorsal)',color:'#6B4A8A'},
+  {cat:'col',text:'Erector espinal',color:'#4A6B8A'},{cat:'col',text:'Multífido',color:'#4A6B8A'},{cat:'col',text:'Psoas mayor',color:'#4A6B8A'},{cat:'col',text:'Cuadrado lumbar',color:'#4A6B8A'},
+];
+
+let mmCanvasNodes = []; // {id, x, y, text, color, w, h}
+let mmConnections = []; // {from, to}
+let mmDragNode = null, mmDragOffX=0, mmDragOffY=0;
+let mmConnectMode = false, mmConnectSource = null;
+let mmEditNode = null;
+let mmPanX=0, mmPanY=0, mmPanStart=null, mmPanScale=1;
+let mmConnStyle='line';
+let mmNodeIdCounter=0;
+let mmCurrentCat='all', mmCurrentSearch='';
+
+function initMindMap(){
+  const canvas=document.getElementById('mm-canvas');
+  if(!canvas) return;
+  const rect=canvas.parentElement.getBoundingClientRect();
+  canvas.width=rect.width; canvas.height=rect.height-44; // subtract toolbar
+  canvas.style.top='44px';
+  buildLibrary();
+  setupMMCanvas(canvas);
+  mmDrawAll();
+}
+
+function buildLibrary(){
+  const lib=document.getElementById('mm-library');
+  if(!lib) return;
+  lib.innerHTML='';
+  const items=MM_LIBRARY.filter(n=>{
+    const catOk=mmCurrentCat==='all'||n.cat===mmCurrentCat;
+    const searchOk=!mmCurrentSearch||n.text.toLowerCase().includes(mmCurrentSearch.toLowerCase());
+    return catOk&&searchOk;
+  });
+  items.forEach(item=>{
+    const div=document.createElement('div'); div.className='mm-lib-item';
+    div.draggable=true;
+    div.innerHTML=`<div class="mm-lib-dot" style="background:${item.color}"></div><span>${item.text}</span>`;
+    div.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain',JSON.stringify({text:item.text,color:item.color})); });
+    div.addEventListener('click',()=>{ addMMNode(200+Math.random()*400,150+Math.random()*200,item.text,item.color); });
+    lib.appendChild(div);
+  });
+}
+
+function filterLib(val){ mmCurrentSearch=val; buildLibrary(); }
+function filterCat(cat,btn){ mmCurrentCat=cat; document.querySelectorAll('.mm-cat-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); buildLibrary(); }
+
+function addMMNode(x,y,text,color){
+  const ctx=document.getElementById('mm-canvas').getContext('2d');
+  ctx.font='bold 13px Jost,sans-serif';
+  const lines=text.split('\n');
+  const w=Math.max(80,Math.max(...lines.map(l=>ctx.measureText(l).width))+24);
+  const h=lines.length>1?44:28;
+  mmCanvasNodes.push({id:mmNodeIdCounter++,x,y,text,color,w,h});
+  mmDrawAll();
+}
+
+function addCustomNode(){
+  const txt=document.getElementById('mm-custom-text').value.trim();
+  const col=document.getElementById('mm-custom-color').value;
+  if(!txt) return;
+  addMMNode(200+Math.random()*300,150+Math.random()*150,txt,col);
+  document.getElementById('mm-custom-text').value='';
+}
+
+function mmCanvasZoom(f){ mmPanScale=Math.max(0.3,Math.min(3,mmPanScale*f)); mmDrawAll(); }
+function mmCanvasReset(){ mmPanX=0;mmPanY=0;mmPanScale=1; mmDrawAll(); }
+function mmClearCanvas(){ if(confirm('¿Borrar todo el canvas?')){ mmCanvasNodes=[];mmConnections=[];mmConnectSource=null;mmConnectMode=false; mmDrawAll(); } }
+
+function mmGetNode(id){ return mmCanvasNodes.find(n=>n.id===id); }
+
+function mmHitTest(x,y){
+  // Convert screen coords to canvas coords
+  const cx=(x-mmPanX)/mmPanScale, cy=(y-mmPanY)/mmPanScale;
+  for(let i=mmCanvasNodes.length-1;i>=0;i--){
+    const n=mmCanvasNodes[i];
+    if(cx>=n.x-n.w/2&&cx<=n.x+n.w/2&&cy>=n.y-n.h/2&&cy<=n.y+n.h/2) return n;
+  }
+  return null;
+}
+
+function mmDrawAll(){
+  const canvas=document.getElementById('mm-canvas');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // Grid
+  ctx.save();
+  ctx.strokeStyle='rgba(139,107,61,0.06)';
+  ctx.lineWidth=1;
+  const gs=20*mmPanScale;
+  const ox=mmPanX%gs, oy=mmPanY%gs;
+  for(let x=ox;x<canvas.width;x+=gs){ ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke(); }
+  for(let y=oy;y<canvas.height;y+=gs){ ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke(); }
+  ctx.restore();
+
+  ctx.save();
+  ctx.translate(mmPanX,mmPanY);
+  ctx.scale(mmPanScale,mmPanScale);
+
+  // Draw connections
+  const connColor=document.getElementById('mm-conn-color')?document.getElementById('mm-conn-color').value:'#8B6B3D';
+  mmConnections.forEach(conn=>{
+    const a=mmGetNode(conn.from),b=mmGetNode(conn.to);
+    if(!a||!b) return;
+    ctx.beginPath();
+    ctx.strokeStyle=connColor; ctx.lineWidth=1.5/mmPanScale; ctx.globalAlpha=0.6;
+    if(mmConnStyle==='curve'){
+      const mx=(a.x+b.x)/2;
+      ctx.moveTo(a.x,a.y); ctx.bezierCurveTo(mx,a.y,mx,b.y,b.x,b.y);
+    } else if(mmConnStyle==='elbow'){
+      const mx=(a.x+b.x)/2;
+      ctx.moveTo(a.x,a.y); ctx.lineTo(mx,a.y); ctx.lineTo(mx,b.y); ctx.lineTo(b.x,b.y);
+    } else {
+      ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+    }
+    ctx.stroke(); ctx.globalAlpha=1;
+    // Arrow
+    const ang=Math.atan2(b.y-a.y,b.x-a.x);
+    const al=8/mmPanScale;
+    ctx.beginPath(); ctx.fillStyle=connColor;
+    ctx.moveTo(b.x-al*Math.cos(ang-0.4),b.y-al*Math.sin(ang-0.4));
+    ctx.lineTo(b.x,b.y);
+    ctx.lineTo(b.x-al*Math.cos(ang+0.4),b.y-al*Math.sin(ang+0.4));
+    ctx.closePath(); ctx.fill();
+  });
+
+  // Draw nodes
+  mmCanvasNodes.forEach(n=>{
+    const isSelected=mmConnectSource&&mmConnectSource.id===n.id;
+    ctx.save();
+    // Shadow
+    ctx.shadowColor='rgba(0,0,0,0.12)'; ctx.shadowBlur=6/mmPanScale; ctx.shadowOffsetY=2/mmPanScale;
+    // Fill
+    ctx.fillStyle=n.color;
+    ctx.strokeStyle=isSelected?'#FFD700':'rgba(255,255,255,0.4)';
+    ctx.lineWidth=isSelected?3/mmPanScale:1.5/mmPanScale;
+    const r=n.h/2;
+    ctx.beginPath();
+    ctx.roundRect(n.x-n.w/2,n.y-n.h/2,n.w,n.h,r);
+    ctx.fill(); ctx.shadowColor='transparent'; ctx.stroke();
+    // Text
+    ctx.shadowBlur=0; ctx.fillStyle='#fff';
+    ctx.font=`600 ${13/mmPanScale}px Jost,sans-serif`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    const lines=n.text.split('\n');
+    lines.forEach((line,i)=>{ ctx.fillText(line,n.x,n.y+(i-(lines.length-1)/2)*(14/mmPanScale)); });
+    ctx.restore();
+  });
+
+  ctx.restore();
+}
+
+function setupMMCanvas(canvas){
+  // Drop from library
+  canvas.addEventListener('dragover',e=>{ e.preventDefault(); });
+  canvas.addEventListener('drop',e=>{
+    e.preventDefault();
+    try {
+      const data=JSON.parse(e.dataTransfer.getData('text/plain'));
+      const rect=canvas.getBoundingClientRect();
+      const cx=(e.clientX-rect.left-mmPanX)/mmPanScale;
+      const cy=(e.clientY-rect.top-mmPanY)/mmPanScale;
+      addMMNode(cx,cy,data.text,data.color);
+    } catch(err){}
+  });
+
+  let isPanning=false;
+  canvas.addEventListener('mousedown',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+    const hit=mmHitTest(mx,my);
+    if(hit){
+      if(mmConnectMode){
+        if(!mmConnectSource){ mmConnectSource=hit; mmDrawAll(); }
+        else if(mmConnectSource.id!==hit.id){
+          const exists=mmConnections.find(c=>(c.from===mmConnectSource.id&&c.to===hit.id)||(c.from===hit.id&&c.to===mmConnectSource.id));
+          if(!exists) mmConnections.push({from:mmConnectSource.id,to:hit.id});
+          mmConnectSource=null; mmDrawAll();
+        }
+      } else {
+        mmDragNode=hit;
+        mmDragOffX=(mx-mmPanX)/mmPanScale-hit.x;
+        mmDragOffY=(my-mmPanY)/mmPanScale-hit.y;
+      }
+    } else {
+      if(!mmConnectMode){ isPanning=true; mmPanStart={x:mx-mmPanX,y:my-mmPanY}; }
+      if(mmConnectMode){ mmConnectSource=null; mmDrawAll(); }
+    }
+  });
+
+  canvas.addEventListener('mousemove',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+    if(mmDragNode){ mmDragNode.x=(mx-mmPanX)/mmPanScale-mmDragOffX; mmDragNode.y=(my-mmPanY)/mmPanScale-mmDragOffY; mmDrawAll(); }
+    else if(isPanning){ mmPanX=mx-mmPanStart.x; mmPanY=my-mmPanStart.y; mmDrawAll(); }
+    canvas.style.cursor=mmHitTest(mx,my)?'grab':'default';
+  });
+
+  canvas.addEventListener('mouseup',()=>{ mmDragNode=null; isPanning=false; });
+  canvas.addEventListener('mouseleave',()=>{ mmDragNode=null; isPanning=false; });
+
+  canvas.addEventListener('dblclick',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const hit=mmHitTest(e.clientX-rect.left,e.clientY-rect.top);
+    if(hit){
+      const newText=prompt('Editar nodo:', hit.text);
+      if(newText!==null) { hit.text=newText||hit.text; mmDrawAll(); }
+    }
+  });
+
+  canvas.addEventListener('contextmenu',e=>{
+    e.preventDefault();
+    const rect=canvas.getBoundingClientRect();
+    const hit=mmHitTest(e.clientX-rect.left,e.clientY-rect.top);
+    if(hit){ mmCanvasNodes=mmCanvasNodes.filter(n=>n.id!==hit.id); mmConnections=mmConnections.filter(c=>c.from!==hit.id&&c.to!==hit.id); mmDrawAll(); }
+  });
+
+  canvas.addEventListener('wheel',e=>{ e.preventDefault(); mmCanvasZoom(e.deltaY<0?1.1:0.9); },{passive:false});
+
+  // Connect mode toggle hint
+  document.addEventListener('keydown',e=>{ if(e.key==='c'||e.key==='C'){ mmConnectMode=!mmConnectMode; mmConnectSource=null; const hint=document.getElementById('mm-mode-hint'); if(hint) hint.textContent=mmConnectMode?'Modo: CONECTAR · Clic nodo A → clic nodo B':'Modo: mover · Pulsa C para conectar'; mmDrawAll(); } });
+}
+
+// ===== CONFIG SUPABASE =====
+// → Remplace ces deux valeurs par tes credentials Supabase (voir GUIDE_DEPLOIEMENT.md)
+const SUPA_URL = 'https://mabcvxovrhwcbetfxyis.supabase.co';      // ← colle ton Project URL ici
+const SUPA_KEY = 'rlsazxnesaajhoogxjwj';          // ← colle ton anon public key ici
+
+// Helper Supabase REST
+async function supaFetch(path, opts={}){
+  const res = await fetch(SUPA_URL+'/rest/v1/'+path, {
+    headers: {
+      'apikey': SUPA_KEY,
+      'Authorization': 'Bearer '+SUPA_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer||'return=representation',
+      ...(opts.headers||{})
+    },
+    method: opts.method||'GET',
+    body: opts.body||undefined
+  });
+  if(!res.ok) throw new Error(await res.text());
+  const txt = await res.text();
+  return txt ? JSON.parse(txt) : null;
+}
+
+function supaConfigured(){
+  return SUPA_URL !== 'https://mabcvxovrhwcbetfxyis.supabase.co' && SUPA_KEY !== 'rlsazxnesaajhoogxjwj';
+}
+
+// ===== DUEL SYSTEM =====
+let duelTimePerQ=30, duelCurrentGame=null, duelTimerInterval=null, duelSecondsLeft=0;
+let duelCode='', duelRole='creator', duelPollInterval=null;
+
+function duelTab(tab, btn){
+  document.querySelectorAll('.duel-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ['duel-create','duel-join','duel-results','duel-library','duel-game','duel-final'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.style.display='none';
+  });
+  const el=document.getElementById('duel-'+tab);
+  if(el) el.style.display='';
+  if(duelPollInterval){ clearInterval(duelPollInterval); duelPollInterval=null; }
+  if(tab==='results') renderDuelResults();
+  if(tab==='library') renderDuelLibrary();
+}
+
+function selectTime(btn,t){
+  document.querySelectorAll('.duel-time-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); duelTimePerQ=t;
+}
+
+function generateDuelCode(){
+  const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let s='TMO-'; for(let i=0;i<4;i++) s+=c[Math.floor(Math.random()*c.length)];
+  return s;
+}
+
+function getDuelQuestions(source){
+  if(source) return source; // from library
+  const bank=document.getElementById('duel-bank').value;
+  const count=parseInt(document.getElementById('duel-count').value);
+  let pool=bank==='all'?[...qcm1Questions,...qcm2Questions,...qcm3Questions]:[...allQcms[parseInt(bank)]];
+  return pool.sort(()=>Math.random()-0.5).slice(0,Math.min(count,pool.length));
+}
+
+// ---- CREATE ----
+async function createDuel(librarySource){
+  const btn=document.querySelector('#duel-create .duel-create-btn');
+  if(btn){ btn.textContent='⏳ Creando...'; btn.disabled=true; }
+
+  duelCode=generateDuelCode();
+  duelRole='creator';
+  const questions=getDuelQuestions(librarySource);
+  const duelData={
+    code: duelCode,
+    questions: questions.map(q=>({q:q.q||q.question,options:q.options,correct:q.correct})),
+    timePerQ: duelTimePerQ,
+    creator: currentUser.name,
+    creator_score: null,
+    joiner_score: null,
+    joiner: null,
+    status: 'waiting',
+    created_at: new Date().toISOString()
+  };
+
+  let shareUrl='';
+  if(supaConfigured()){
+    try{
+      await supaFetch('duels',{
+        method:'POST',
+        body: JSON.stringify(duelData),
+        prefer:'return=minimal'
+      });
+      shareUrl=location.origin+location.pathname+'?code='+duelCode;
+    }catch(e){
+      console.error('Supabase error:',e);
+      showNotif('⚠ Error de servidor — usando modo URL',3000);
+    }
+  }
+  if(!shareUrl){
+    // Fallback URL-encoded
+    const enc=btoa(unescape(encodeURIComponent(JSON.stringify(duelData))));
+    shareUrl=location.href.split('?')[0]+'?code='+duelCode+'&d='+enc;
+  }
+
+  window._duelData=duelData;
+  window._duelShareUrl=shareUrl;
+  if(btn){ btn.textContent='⚔️ Crear duelo y generar enlace'; btn.disabled=false; }
+
+  document.getElementById('duel-code-display').textContent=duelCode;
+  const urlEl=document.getElementById('duel-url-display');
+  urlEl.textContent=shareUrl.length>80?shareUrl.slice(0,77)+'…':shareUrl;
+  urlEl.title=shareUrl;
+  document.getElementById('duel-link-box').style.display='';
+}
+
+function copyDuelCode(){
+  navigator.clipboard.writeText(duelCode)
+    .then(()=>showNotif('✓ Código copiado: '+duelCode,2500))
+    .catch(()=>prompt('Código del duelo:',duelCode));
+}
+function copyDuelUrl(){
+  navigator.clipboard.writeText(window._duelShareUrl||location.href)
+    .then(()=>showNotif('✓ Enlace copiado — envíalo a tu adversario',3000))
+    .catch(()=>prompt('Enlace del duelo:',window._duelShareUrl));
+}
+
+function startDuelAsCreator(){
+  if(!window._duelData){ showNotif('❌ Crea el duelo primero',2500); return; }
+  duelCurrentGame=window._duelData;
+  duelRole='creator';
+  startDuelGame();
+}
+
+// ---- JOIN ----
+async function joinDuel(){
+  const raw=document.getElementById('duel-join-code').value.trim();
+  document.getElementById('duel-join-info').style.display='none';
+  document.getElementById('duel-join-error').style.display='none';
+  const joinBtn=document.querySelector('#duel-join .duel-join-btn');
+  if(joinBtn){ joinBtn.textContent='⏳ Buscando...'; joinBtn.disabled=true; }
+
+  let code='', encodedData=null, data=null;
+
+  if(raw.startsWith('http')||raw.includes('?code=')){
+    try{
+      const u=new URL(raw.startsWith('http')?raw:'https://x'+raw.slice(raw.indexOf('?')));
+      code=(u.searchParams.get('code')||'').toUpperCase();
+      encodedData=u.searchParams.get('d');
+    }catch(e){}
+  } else {
+    code=raw.toUpperCase();
+    if(!code.startsWith('TMO-')) code='TMO-'+code;
+    // check current URL params
+    const p=new URLSearchParams(location.search);
+    if(p.get('code')===code) encodedData=p.get('d');
+  }
+
+  // 1. Try Supabase
+  if(supaConfigured()&&code){
+    try{
+      const rows=await supaFetch('duels?code=eq.'+code+'&limit=1');
+      if(rows&&rows.length) data=rows[0];
+    }catch(e){}
+  }
+  // 2. URL-encoded fallback
+  if(!data&&encodedData){
+    try{ data=JSON.parse(decodeURIComponent(escape(atob(encodedData)))); }catch(e){}
+  }
+  // 3. localStorage (same device)
+  if(!data){
+    const m=LS.get('duelData')||{};
+    data=m[code||raw]||null;
+  }
+
+  if(joinBtn){ joinBtn.textContent='Unirse ⚔️'; joinBtn.disabled=false; }
+
+  if(!data){
+    document.getElementById('duel-join-error').innerHTML=
+      '<b>❌ Duelo no encontrado.</b><br><small>Asegúrate de que Supabase está configurado y pega el <u>enlace completo</u> si no lo está.</small>';
+    document.getElementById('duel-join-error').style.display='';
+    return;
+  }
+
+  duelCode=code||data.code;
+  duelRole='joiner';
+  duelCurrentGame=data;
+
+  document.getElementById('duel-join-title').textContent='⚔️ Duelo de '+(data.creator||'?')+' · '+data.questions.length+' preguntas';
+  document.getElementById('duel-join-meta').textContent='Tiempo: '+(data.timePerQ>0?data.timePerQ+'s':'Sin límite')+' por pregunta';
+  document.getElementById('duel-join-info').style.display='';
+}
+
+function startDuelAsJoiner(){
+  if(!duelCurrentGame){ showNotif('❌ Busca el duelo primero',2500); return; }
+  startDuelGame();
+}
+
+// ---- GAME ----
+let duelAnswers=[], duelQIdx=0, duelScore=0;
+
+function startDuelGame(){
+  duelQIdx=0; duelScore=0; duelAnswers=[];
+  ['duel-create','duel-join','duel-link-box','duel-results','duel-library','duel-final'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.style.display='none';
+  });
+  document.getElementById('duel-game').style.display='';
+  duelShowQuestion();
+}
+
+function duelShowQuestion(){
+  const qs=duelCurrentGame.questions;
+  if(duelQIdx>=qs.length){ duelFinish(); return; }
+  const q=qs[duelQIdx], total=qs.length;
+  document.getElementById('dg-title').textContent='Pregunta '+(duelQIdx+1)+' de '+total;
+  document.getElementById('dg-q-num').textContent='Pregunta '+(duelQIdx+1);
+  document.getElementById('dg-q-text').textContent=q.q||q.question||'';
+  document.getElementById('dg-progress-bar').style.width=Math.round(duelQIdx/total*100)+'%';
+  const ol=document.getElementById('dg-options'); ol.innerHTML='';
+  (q.options||[]).forEach((opt,i)=>{
+    const li=document.createElement('li'),lbl=document.createElement('label');
+    lbl.innerHTML=`<input type="radio" name="duel_q" value="${i}" onchange="duelAnswer(${i})"> ${opt}`;
+    li.appendChild(lbl); ol.appendChild(li);
+  });
+  const tpq=duelCurrentGame.timePerQ||0;
+  if(tpq>0){
+    duelSecondsLeft=tpq;
+    document.getElementById('dg-timer').textContent=duelSecondsLeft;
+    document.getElementById('dg-timer').style.display='';
+    if(duelTimerInterval) clearInterval(duelTimerInterval);
+    duelTimerInterval=setInterval(()=>{
+      duelSecondsLeft=Math.max(0,duelSecondsLeft-1);
+      document.getElementById('dg-timer').textContent=duelSecondsLeft;
+      if(duelSecondsLeft<=0){ clearInterval(duelTimerInterval); duelAnswer(-1); }
+    },1000);
+  } else { document.getElementById('dg-timer').style.display='none'; duelSecondsLeft=0; }
+}
+
+function duelAnswer(ans){
+  if(duelTimerInterval) clearInterval(duelTimerInterval);
+  const q=duelCurrentGame.questions[duelQIdx];
+  const ok=ans===q.correct;
+  if(ok) duelScore+=duelSecondsLeft>0?Math.max(10,duelSecondsLeft*3):10;
+  duelAnswers.push({ans,ok});
+  document.querySelectorAll('#dg-options label').forEach((l,i)=>{
+    l.style.pointerEvents='none';
+    if(i===q.correct) l.style.background='#E8F5E9';
+    else if(i===ans&&!ok) l.style.background='#FFEBEE';
+  });
+  document.getElementById('dg-score').textContent=duelScore;
+  setTimeout(()=>{ duelQIdx++; duelShowQuestion(); },1200);
+}
+
+// ---- FINISH ----
+async function duelFinish(){
+  if(duelTimerInterval) clearInterval(duelTimerInterval);
+  document.getElementById('duel-game').style.display='none';
+  document.getElementById('duel-final').style.display='';
+
+  const total=duelCurrentGame.questions.length;
+  const correct=duelAnswers.filter(a=>a.ok).length;
+  const myScore={score:duelScore,correct,total,name:currentUser.name,ts:Date.now()};
+
+  let opponentScore=null;
+
+  if(supaConfigured()){
+    try{
+      // Read current row
+      const rows=await supaFetch('duels?code=eq.'+duelCode+'&limit=1');
+      if(rows&&rows.length){
+        const row=rows[0];
+        const update={};
+        if(duelRole==='creator'){
+          update.creator_score=myScore; update.status='creator_done';
+          opponentScore=row.joiner_score;
+        } else {
+          update.joiner_score=myScore; update.joiner=currentUser.name; update.status='joiner_done';
+          opponentScore=row.creator_score;
+          // If both done → save to library
+          if(row.creator_score){
+            update.status='complete';
+            await saveToLibrary(duelCurrentGame, row.creator_score, myScore);
+          }
+        }
+        await supaFetch('duels?code=eq.'+duelCode,{method:'PATCH',body:JSON.stringify(update),prefer:'return=minimal'});
+
+        // If creator done and joiner already done too
+        if(duelRole==='creator'&&row.joiner_score){
+          await supaFetch('duels?code=eq.'+duelCode,{method:'PATCH',body:JSON.stringify({status:'complete'}),prefer:'return=minimal'});
+          await saveToLibrary(duelCurrentGame, myScore, row.joiner_score);
+        }
+      }
+    }catch(e){ console.error('Finish error:',e); }
+  }
+
+  // Show score
+  const pct=correct/total;
+  document.getElementById('df-emoji').textContent=pct>=0.8?'🏆':pct>=0.5?'😊':'💪';
+  document.getElementById('df-title').textContent=pct>=0.8?'¡Excelente!':pct>=0.5?'¡Bien hecho!':'¡Sigue practicando!';
+  document.getElementById('df-score').textContent=duelScore+' pts';
+  document.getElementById('df-detail').textContent=correct+' correctas de '+total;
+
+  document.getElementById('df-compare').style.display='';
+  if(opponentScore){
+    showDuelWinner(myScore,opponentScore);
+  } else if(supaConfigured()){
+    document.getElementById('df-compare-content').innerHTML=
+      '<div style="text-align:center;padding:1rem"><div style="font-size:28px;animation:breathe 2s infinite">⏳</div><div style="font-size:13px;color:var(--warm-gray);margin-top:0.4rem">Esperando a tu adversario…<br><small>Actualización automática cada 5 segundos</small></div></div>';
+    startPolling(myScore);
+  } else {
+    showFallbackCompare(myScore);
+  }
+
+  // Local history
+  const hist=LS.get('duelHistory')||[];
+  hist.push({code:duelCode,date:new Date().toLocaleDateString('es-ES'),score:duelScore,correct,total,role:duelRole});
+  if(hist.length>50) hist.shift();
+  LS.set('duelHistory',hist);
+}
+
+// ---- LIBRARY SAVE ----
+async function saveToLibrary(game, score1, score2){
+  if(!supaConfigured()) return;
+  const libEntry={
+    code: game.code,
+    title: 'Duelo '+game.code+' — '+game.creator+' vs '+(score2.name||'?'),
+    questions: JSON.stringify(game.questions),
+    creator: game.creator,
+    player1: score1.name,
+    player2: score2.name,
+    score1: score1.score,
+    score2: score2.score,
+    played_count: 1,
+    created_at: new Date().toISOString()
+  };
+  try{
+    await supaFetch('duel_qcms',{method:'POST',body:JSON.stringify(libEntry),prefer:'return=minimal'});
+    showNotif('📚 Preguntas guardadas en la Biblioteca de Duelos',4000);
+  }catch(e){ console.error('Library save error:',e); }
+}
+
+// ---- POLL ----
+function startPolling(myScore){
+  let polls=0;
+  duelPollInterval=setInterval(async()=>{
+    polls++;
+    if(polls>36){ clearInterval(duelPollInterval); document.getElementById('df-compare-content').innerHTML='<div style="color:var(--warm-gray);text-align:center;font-size:13px;padding:1rem">⏰ Tiempo agotado. Tu adversario no ha terminado aún.<br><small>El resultado se guardará cuando acabe.</small></div>'; return; }
+    try{
+      const rows=await supaFetch('duels?code=eq.'+duelCode+'&limit=1');
+      if(rows&&rows.length){
+        const opp=duelRole==='creator'?rows[0].joiner_score:rows[0].creator_score;
+        if(opp){ clearInterval(duelPollInterval); showDuelWinner(myScore,opp); }
+      }
+    }catch(e){}
+  },5000);
+}
+
+// ---- COMPARE ----
+function showDuelWinner(me, opp){
+  const win=me.score>=opp.score;
+  document.getElementById('df-compare-content').innerHTML=`
+    <div style="background:${win?'#E8F5E9':'#F3F0FF'};border:2px solid ${win?'#2E7D32':'#7B3FE4'};border-radius:12px;padding:1.2rem">
+      <div style="display:flex;gap:1rem;justify-content:center;align-items:center;flex-wrap:wrap;margin-bottom:0.8rem">
+        <div style="text-align:center;flex:1"><div style="font-size:26px;font-weight:700;color:#7B3FE4">${me.score}</div><div style="font-size:13px;font-weight:500">${me.name} <span style="opacity:0.5">(tú)</span></div><div style="font-size:11px;color:var(--warm-gray)">${me.correct}/${me.total} correctas</div></div>
+        <div style="font-size:28px">⚔️</div>
+        <div style="text-align:center;flex:1"><div style="font-size:26px;font-weight:700;color:#7B3FE4">${opp.score}</div><div style="font-size:13px;font-weight:500">${opp.name}</div><div style="font-size:11px;color:var(--warm-gray)">${opp.correct}/${opp.total} correctas</div></div>
+      </div>
+      <div style="text-align:center;font-weight:700;font-size:16px;color:${win?'#2E7D32':'#7B3FE4'}">🏅 Ganador: ${win?me.name:opp.name}${win?' — ¡eres tú!':''}</div>
+    </div>`;
+  beep(880,0.4); setTimeout(()=>beep(win?1100:660,0.5),400);
+}
+
+function showFallbackCompare(myScore){
+  const enc=btoa(unescape(encodeURIComponent(JSON.stringify({...myScore,code:duelCode,role:duelRole}))));
+  document.getElementById('df-compare-content').innerHTML=`
+    <div style="background:var(--accent-pale);border:1px solid var(--border);border-radius:10px;padding:1rem;font-size:13px">
+      <div style="margin-bottom:0.6rem"><b>⚠ Supabase no configurado</b> — comparte tu resultado manualmente:</div>
+      <button onclick="navigator.clipboard.writeText('${enc}').then(()=>showNotif('✓ Copiado',2000)).catch(()=>prompt('Tu resultado:','${enc}'))" style="padding:5px 12px;background:#7B3FE4;color:#fff;border:none;border-radius:5px;font-size:12px;cursor:pointer;margin-bottom:0.8rem">📋 Copiar mi resultado</button>
+      <div>Cuando tu adversario te envíe su resultado, pégalo aquí:</div>
+      <div style="display:flex;gap:0.5rem;margin-top:0.4rem">
+        <input id="opp-paste" placeholder="Pega el resultado del adversario…" style="flex:1;padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:'Jost',sans-serif">
+        <button onclick="pasteCompare()" style="padding:6px 12px;background:var(--dark);color:var(--accent-light);border:none;border-radius:6px;font-size:12px;cursor:pointer">Comparar</button>
+      </div>
+      <div id="paste-compare-result" style="margin-top:0.6rem"></div>
+    </div>`;
+}
+
+function pasteCompare(){
+  try{
+    const opp=JSON.parse(decodeURIComponent(escape(atob(document.getElementById('opp-paste').value.trim()))));
+    const me={score:duelScore,correct:duelAnswers.filter(a=>a.ok).length,total:duelAnswers.length,name:currentUser.name};
+    showDuelWinner(me,opp);
+  }catch(e){ document.getElementById('paste-compare-result').innerHTML='<span style="color:var(--rust);font-size:12px">❌ Resultado inválido</span>'; }
+}
+
+// ---- LIBRARY ----
+async function renderDuelLibrary(){
+  const cont=document.getElementById('library-list');
+  cont.innerHTML='<div style="text-align:center;padding:1.5rem;color:var(--warm-gray)">⏳ Cargando biblioteca…</div>';
+  if(!supaConfigured()){
+    cont.innerHTML=`<div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:2rem;text-align:center">
+      <div style="font-size:36px;margin-bottom:0.8rem">🔧</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin-bottom:0.5rem">Supabase no configurado</div>
+      <div style="font-size:13px;color:var(--warm-gray)">Configura Supabase para activar la Biblioteca de Duelos.<br>Ver <b>GUIDE_DEPLOIEMENT.md</b> para instrucciones (5 minutos).</div>
+    </div>`;
+    return;
+  }
+  try{
+    const rows=await supaFetch('duel_qcms?order=created_at.desc&limit=50');
+    if(!rows||!rows.length){
+      cont.innerHTML='<div style="text-align:center;padding:2rem;color:var(--warm-gray)">No hay duelos en la biblioteca aún. ¡Completa un duelo para añadir preguntas!</div>';
+      return;
+    }
+    cont.innerHTML='<h3 style="font-family:Cormorant Garamond,serif;font-size:20px;margin-bottom:1rem;color:#1C1A17">📚 Biblioteca de Duelos — '+rows.length+' QCMs</h3>'+
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.8rem">'+
+      rows.map((r,i)=>{
+        const qs=typeof r.questions==='string'?JSON.parse(r.questions):r.questions;
+        return `<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.2rem;transition:box-shadow 0.2s" onmouseover="this.style.boxShadow='0 4px 16px rgba(28,26,23,0.08)'" onmouseout="this.style.boxShadow='none'">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#7B3FE4;margin-bottom:0.3rem">⚔️ ${r.code}</div>
+          <div style="font-size:14px;font-weight:600;color:var(--dark);margin-bottom:0.3rem">${r.player1||r.creator} vs ${r.player2||'?'}</div>
+          <div style="font-size:12px;color:var(--warm-gray);margin-bottom:0.8rem">${qs.length} preguntas · Jugado ${r.played_count||1} vez${r.played_count!==1?'es':''}</div>
+          <div style="display:flex;gap:0.5rem">
+            <button onclick="startDuelFromLibrary(${i})" data-idx="${i}" style="flex:1;padding:6px;background:#7B3FE4;color:#fff;border:none;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Jost',sans-serif">▶ Entrenar</button>
+            <button onclick="createDuelFromLibrary(${i})" data-idx="${i}" style="flex:1;padding:6px;background:var(--dark);color:var(--accent-light);border:none;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Jost',sans-serif">⚔️ Nuevo duelo</button>
+          </div>
+        </div>`;
+      }).join('')+'</div>';
+    // Store rows for button callbacks
+    window._libRows=rows;
+  }catch(e){
+    cont.innerHTML='<div style="color:var(--rust);padding:1rem">❌ Error cargando biblioteca: '+e.message+'</div>';
+  }
+}
+
+function startDuelFromLibrary(idx){
+  const r=window._libRows[idx];
+  const qs=typeof r.questions==='string'?JSON.parse(r.questions):r.questions;
+  duelCode=r.code;
+  duelRole='solo';
+  duelCurrentGame={code:r.code,questions:qs,timePerQ:duelTimePerQ,creator:r.creator};
+  // Increment played_count
+  if(supaConfigured()) supaFetch('duel_qcms?id=eq.'+r.id,{method:'PATCH',body:JSON.stringify({played_count:(r.played_count||1)+1}),prefer:'return=minimal'}).catch(()=>{});
+  startDuelGame();
+}
+
+async function createDuelFromLibrary(idx){
+  const r=window._libRows[idx];
+  const qs=typeof r.questions==='string'?JSON.parse(r.questions):r.questions;
+  await createDuel(qs);
+  duelTab('create',document.querySelector('.duel-tab'));
+  document.getElementById('duel-link-box').style.display='';
+  showNotif('⚔️ Duelo creado con preguntas de la biblioteca',3000);
+}
+
+function renderDuelResults(){
+  const hist=LS.get('duelHistory')||[];
+  const list=document.getElementById('duel-results-list');
+  if(!hist.length){
+    list.innerHTML='<div style="text-align:center;padding:2rem;color:var(--warm-gray);font-size:14px">No hay duelos aún.</div>';
+    return;
+  }
+  list.innerHTML='<table class="lb-table" style="width:100%"><thead><tr><th>Fecha</th><th>Código</th><th>Rol</th><th>Puntos</th><th>Aciertos</th></tr></thead><tbody>'+
+    hist.slice().reverse().map(d=>`<tr><td>${d.date}</td><td style="font-family:monospace;font-weight:600;color:#7B3FE4">${d.code}</td><td>${d.role==='creator'?'Creador':d.role==='solo'?'Entrenamiento':'Invitado'}</td><td>${d.score}</td><td>${d.correct}/${d.total}</td></tr>`).join('')+
+  '</tbody></table>';
+}
+
+function checkURLDuel(){
+  const p=new URLSearchParams(location.search);
+  const code=p.get('code'), d=p.get('d');
+  if(code){
+    showPage('duel');
+    const joinInput=document.getElementById('duel-join-code');
+    if(joinInput) joinInput.value=d?location.href:code;
+    duelTab('join',document.querySelectorAll('.duel-tab')[1]);
+    joinDuel();
+  }
+}
+
+
+// ===== QCM DATA =====
+const qcm1Questions=[
+  {q:'¿Cuál NO es una finalidad de la cinesiterapia pasiva?',options:['Elongar contracturas','Disminuir el dolor','Estabilizar articulaciones','Estimular receptores sensoriales','Mantener el tropismo muscular'],correct:2,exp:'Estabilizar articulaciones NO es una finalidad. La cinesiterapia conserva RA, evita retracción, reduce hipertonía.'},
+  {q:'¿Cuál es la fórmula de T4 en MPS?',options:['T4=T1×T2','T4=T1+T2+T3','T4=T2+T3','T4=T3-T1','T4 no tiene fórmula'],correct:1,exp:'T4 (reposo) = T1+T2+T3. Tracciones: T2>T3>T1. MPE: sin tiempos.'},
+  {q:'La articulación subastragalina es de tipo:',options:['Condílea','Troclear','Trocoide','Artrodia','Enartrosis'],correct:2,exp:'Subastragalina = trocoide posterior. Eje de Henke. Permite pron/sup del calcáneo.'},
+  {q:'La articulación escápulo-torácica es:',options:['Sinovial plana','Enartrosis funcional','Sisarcosis','Trocoide','Condílea'],correct:2,exp:'Sisarcosis: no hay superficies articulares. Desliza VÍA serrato ant y subescapular.'},
+  {q:'¿Qué articulación permite la pronosupinación?',options:['Húmero-cubital','Radio-carpiana','Radio-cubitales sup/inf','Gleno-humeral','Fémoro-tibial'],correct:2,exp:'Radio-cubitales (trocoide) permiten la pronosupinación. La HC solo flex/ext.'},
+  {q:'La desviación cubital de muñeca equivale a:',options:['RE','Flexión','ADD','ABD','Extensión'],correct:2,exp:'Desviación cubital = ADD. Desviación radial = ABD. Plano frontal de la radio-carpiana.'},
+  {q:'Las MPF se caracterizan por:',options:['Presas cortas y palancas cortas','Una sola articulación','Presas grandes y palancas largas','Sin fijación','Solo EEII'],correct:2,exp:'MPF: presas grandes + palancas largas + varias articulaciones.'},
+  {q:'Finalidad de apertura anterior en acromio-clavicular:',options:['Ganar RI GH','ABD horizontal EH (=MPS ventral ECC)','Aumentar ext EH','Movilizar solo AC','Reducir dolor AC'],correct:1,exp:'Apertura anterior AC: misma finalidad que MPS ventral ECC → ABD horizontal EH.'},
+  {q:'La húmero-cubital es:',options:['Condílea','Trocoide','Troclear — flex/ext','Artrodia','Enartrosis'],correct:2,exp:'HC = troclear. 1 eje: flex/ext. Ligamentos impiden laterales.'},
+  {q:'En FLEXIÓN de cadera el deslizamiento es:',options:['Ventral+rod. dorsal','Dorsal+rod. ventral','Caudal+rod. craneal','Craneal+rod. caudal','Lateral+rod. medial'],correct:1,exp:'Flex cadera: desliz. DORSAL + rod. VENTRAL. Ext: ventral+dorsal. ABD: caudal+craneal.'}
+];
+const qcm2Questions=[
+  {q:'PP para MPS en ABD, flex y RE de GH:',options:['Dec. prono','Dec. lateral homolateral','Dec. lateral contralateral','Sedestación','Dec. supino'],correct:2,exp:'MPS ABD,flex,RE GH: dec. lateral CONTRALATERAL.'},
+  {q:'Contrapresión en tracción eje cuello cadera:',options:['Mano craneal fémur','Ambas manos pie','Tronco fisio parte ext rodilla','Correa pelvis','Mano caudal tobillo'],correct:2,exp:'Tronco del fisio en parte externa de la rodilla → descoaptación superior.'},
+  {q:'Cojín en MPS extensión rodilla:',options:['Detrás rodilla','Debajo pie','1/3 prox tibia post','Debajo fémur distal','No se usa cojín'],correct:2,exp:'Cojín detrás 1/3 prox tibia. ⚠️ NUNCA detrás de la propia rodilla.'},
+  {q:'¿Qué NO se recomienda en distracción de Apley?',options:['Compresión','RI','RE','Tracción','Evaluación meniscal'],correct:3,exp:'Apley: compresión + rotaciones. Tracción NO recomendada.'},
+  {q:'Fijación en MPS flex/ext MCF (4 últimos dedos):',options:['1ª falange','Carpo','Cada metacarpiano','Antebrazo','Muñeca neutra'],correct:2,exp:'FIX: cada metacarpiano. PRESA: cada 1ª falange.'},
+  {q:'Pulgar en MPS pron/sup subastragalina:',options:['Mantiene calcáneo','Interviene activamente','Adapta borde lateral','Elevado, NO interviene','Cualquier posición'],correct:3,exp:'El pulgar en subastragalina debe estar elevado y NO intervenir en el movimiento.'},
+  {q:'Presas garra/cuña/pinza son para:',options:['Gleno-humeral','Chopart','Subastragalina','Escápulo-torácica','Radio-carpiana'],correct:3,exp:'Garra+cuña+pinza → escápulo-torácica (sisarcosis).'},
+  {q:'Fulcro en MPS flexión dorsal de tibio-tarsiana:',options:['Astrágalo','Tibia','Calcáneo','Maléolos','Navicular'],correct:2,exp:'El calcáneo sirve de fulcro. Empujar tibia cráneo-dorsal.'},
+  {q:'Para SUPINACIÓN en Chopart: fijación y presa:',options:['FIX astrágalo+PRESA cuboides','FIX calcáneo+PRESA navicular','FIX navicular+PRESA calcáneo','FIX cuboides+PRESA calcáneo','FIX maléolo+PRESA calcáneo'],correct:1,exp:'Sup Chopart: FIX calcáneo + PRESA navicular. Pron: FIX astrágalo + PRESA cuboides.'},
+  {q:'Retracción cápsula posterior EH se trata con:',options:['MPE ventral','Tracción eje cuello','MPE caudal+ADD horizontal','MPE craneal','MPS ABD GH'],correct:2,exp:'Cápsula post EH: MPE CAUDAL + ADD horizontal.'}
+];
+const qcm3Questions=[
+  {q:'Músculo con patrón motor = flexión HC:',options:['Tríceps','Supinador corto','Braquial anterior','Pectoral mayor','Coracobraquial'],correct:2,exp:'Braquial anterior: patrón motor = flexión húmero-cubital.'},
+  {q:'Para estirar el piramidal:',options:['ABD+ext+RE cadera','ADD+flex+RI cadera','Flex+ABD+RE','Ext+ADD+RI','RE pura'],correct:1,exp:'Piramidal (RE) → estirar: ADD+Flex+RI de cadera.'},
+  {q:'Rodilla con limitación 50° de flex, protocolo:',options:['Directamente MPE dorsal','Tracción→MPE','Primero MPS al máximo, luego MPE dorsal','Solo MPS sin MPE','Movilización funcional EEII'],correct:2,exp:'Límit. 50° flex rodilla: 1)MPS al máximo disponible 2)MPE dorsal en ese ángulo.'},
+  {q:'Tipo articular de Chopart:',options:['Troclear','Trocoide','Enartrosis','Condílea','Artrodia'],correct:3,exp:'Chopart = condílea: 2 ejes (flex/ext + pron/sup).'},
+  {q:'En RE de rodilla los meniscos:',options:['Ext post+int ant','Ext ant+int post','Ambos anterior','Ambos posterior','No se desplazan'],correct:1,exp:'RE: menisco ext→ANT, menisco int→POST. RI: inverso. Flex: ambos post.'},
+  {q:'Tibio-peroneal superior es de tipo:',options:['Enartrosis','Condílea','Artrodia (plana)','Troclear','Trocoide'],correct:2,exp:'Tibio-peroneal superior = artrodia (plana sinovial).'},
+  {q:'Tracción diafisaria tibio-tarsiana descopta:',options:['Solo TT pura','TT+mínimamente coxofemoral, fémoro-tibial, calc-astragalina','Solo subastragalina','Mortaja tibio-peroneal','Cuboides y navicular'],correct:1,exp:'Tracción tobillo: no es pura, implica mínimamente otras articulaciones. Por eso posición cadera importa.'},
+  {q:'Diferencia principal lumbar vs dorsal:',options:['Rotación mayor en lumbar','Flex/ext predomina en lumbar, rotación en dorsal','Movimiento idéntico','Inclin. lateral predomina en dorsal','Sin diferencia funcional'],correct:1,exp:'Lumbar: articulares sagitales→flex/ext, bloquea rotación. Dorsal: costillas→rotación principal.'},
+  {q:'En MPE, articulación que se fija la mayor parte del tiempo:',options:['Distal siempre','Proximal la mayor parte','Ambas igual','Ninguna','Depende solo de la región'],correct:1,exp:'Regla general MPE: fijar articulación PROXIMAL la mayor parte del tiempo.'},
+  {q:'Chopart permite:',options:['Solo FD y FP','Pron/sup únicamente','Flex/ext + pron/sup','RI/RE solamente','Igual que tibio-tarsiana'],correct:2,exp:'Chopart (condílea): flex/ext + pron/sup = inversión/eversión. Eje gravitacional en cada paso.'}
+];
+const allQcms={1:qcm1Questions,2:qcm2Questions,3:qcm3Questions};
+
+function buildQCM(num){
+  const qs=allQcms[num], cont=document.getElementById('q'+num+'-container');
+  cont.innerHTML='';
+  qs.forEach((q,qi)=>{
+    const div=document.createElement('div'); div.className='question-card'; div.id='qcard-'+num+'-'+qi;
+    let opts='';
+    q.options.forEach((opt,oi)=>opts+=`<li><label id="ql-${num}-${qi}-${oi}"><input type="radio" name="q${num}_${qi}" value="${oi}"> ${opt}</label></li>`);
+    div.innerHTML=`<div class="q-number">Pregunta ${qi+1} de ${qs.length}</div><div class="q-text">${q.q}</div><ul class="q-options">${opts}</ul><div class="q-explication" id="qexp-${num}-${qi}">${q.exp}</div>`;
+    cont.appendChild(div);
+  });
+}
+
+function corregirQCM(num){
+  const qs=allQcms[num]; let score=0;
+  qs.forEach((q,qi)=>{
+    const sel=document.querySelector(`input[name="q${num}_${qi}"]:checked`);
+    const card=document.getElementById('qcard-'+num+'-'+qi);
+    card.classList.remove('correct','incorrect');
+    q.options.forEach((_,oi)=>{ const l=document.getElementById(`ql-${num}-${qi}-${oi}`); if(l){l.classList.remove('correct-answer','wrong-answer');} });
+    if(sel){ const v=+sel.value; if(v===q.correct){score++;card.classList.add('correct');document.getElementById(`ql-${num}-${qi}-${v}`).classList.add('correct-answer');}
+    else{card.classList.add('incorrect');document.getElementById(`ql-${num}-${qi}-${v}`).classList.add('wrong-answer');document.getElementById(`ql-${num}-${qi}-${q.correct}`).classList.add('correct-answer');}}
+    else{card.classList.add('incorrect');document.getElementById(`ql-${num}-${qi}-${q.correct}`).classList.add('correct-answer');}
+    document.getElementById('qexp-'+num+'-'+qi).classList.add('visible');
+  });
+  document.getElementById('score'+num).innerHTML=score+' <span>/ '+qs.length+'</span>';
+  saveQCMScore(num, score, qs.length);
+}
+
+function resetQCM(num){
+  allQcms[num].forEach((_,qi)=>{
+    document.querySelectorAll(`input[name="q${num}_${qi}"]`).forEach(r=>r.checked=false);
+    const card=document.getElementById('qcard-'+num+'-'+qi); card.classList.remove('correct','incorrect');
+    document.getElementById('qexp-'+num+'-'+qi).classList.remove('visible');
+    allQcms[num][qi].options.forEach((_,oi)=>{ const l=document.getElementById(`ql-${num}-${qi}-${oi}`); if(l)l.classList.remove('correct-answer','wrong-answer'); });
+  });
+  document.getElementById('score'+num).innerHTML='— <span>/ '+allQcms[num].length+'</span>';
+}
+
+// ===== LEADERBOARD & PERSISTENCE =====
+function saveSession(){
+  const sessions=LS.get('sessions')||[];
+  const dur=Math.round((Date.now()-sessionStart)/60000);
+  const chapCount=Object.keys(chaptersDone).length;
+  sessions.push({ date:new Date().toLocaleDateString('es-ES'), dur, chapters:chapCount, sqCorrect:sessionSurpriseCorrect, sqTotal:sessionSurpriseTotal });
+  if(sessions.length>50) sessions.shift();
+  LS.set('sessions', sessions);
+  sessionStart=Date.now(); sessionSurpriseCorrect=0; sessionSurpriseTotal=0;
+}
+
+function saveQCMScore(num, score, total){
+  const scores=LS.get('qcmscores')||[];
+  scores.push({ qcm:num, score, total, date:new Date().toLocaleDateString('es-ES') });
+  if(scores.length>100) scores.shift();
+  LS.set('qcmscores', scores);
+}
+
+function renderLB(){
+  const user=LS.get('user')||currentUser;
+  if(user.avatarType==='img'){
+    document.getElementById('lb-user-avatar-big').innerHTML=`<img src="${user.avatar}" style="width:48px;height:48px;border-radius:50%;object-fit:cover">`;
+  } else { document.getElementById('lb-user-avatar-big').textContent=user.avatar||'👤'; }
+  document.getElementById('lb-username-big').textContent=user.name||'Estudiante';
+
+  const sessions=LS.get('sessions')||[];
+  const chapters=LS.get('chapters')||{};
+  const qscores=LS.get('qcmscores')||[];
+
+  const totalMin=sessions.reduce((a,s)=>a+(s.dur||0),0);
+  document.getElementById('lb-total-time').textContent=totalMin>=60?Math.floor(totalMin/60)+'h '+(totalMin%60)+'min':totalMin+'min';
+  document.getElementById('lb-chapters-done').textContent=Object.keys(chapters).length;
+  const lastScores=[1,2,3].map(n=>{ const sc=qscores.filter(s=>s.qcm===n); return sc.length?sc[sc.length-1].score/sc[sc.length-1].total*10:null; }).filter(x=>x!==null);
+  document.getElementById('lb-score-avg').textContent=lastScores.length?Math.round(lastScores.reduce((a,b)=>a+b,0)/lastScores.length*10)/10+'/10':'—';
+
+  // Histogram
+  const hist=document.getElementById('lb-hist-bar');
+  hist.innerHTML='';
+  const last10=sessions.slice(-10);
+  const maxDur=Math.max(...last10.map(s=>s.dur||1),1);
+  last10.forEach(s=>{
+    const col=document.createElement('div'); col.className='lb-hist-col';
+    const bar=document.createElement('div'); bar.style.height=Math.round((s.dur||1)/maxDur*55)+'px'; bar.style.background='var(--accent)'; bar.style.borderRadius='3px 3px 0 0';
+    const lbl=document.createElement('div'); lbl.textContent=(s.dur||0)+'m'; lbl.style='font-size:8px;color:var(--warm-gray)';
+    col.appendChild(bar); col.appendChild(lbl); hist.appendChild(col);
+  });
+
+  // Sessions table
+  const tbody=document.getElementById('lb-sessions-body'); tbody.innerHTML='';
+  const noSessions=document.getElementById('lb-no-sessions');
+  if(sessions.length===0){ noSessions.style.display=''; }
+  else { noSessions.style.display='none';
+    sessions.slice().reverse().slice(0,20).forEach((s,i)=>{
+      const tr=document.createElement('tr'); tr.className=i===0?'me':'';
+      tr.innerHTML=`<td>${sessions.length-i}</td><td>${s.date}</td><td>${s.dur||0} min</td><td>${s.chapters||0}</td><td>${s.sqCorrect||0}/${s.sqTotal||0}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // Chapters table
+  const ctbody=document.getElementById('lb-chapters-body'); ctbody.innerHTML='';
+  const sectionNames={c:'Cinesiterapia',es:'M. Superior',ei:'M. Inferior',col:'Columna',m:'Mind Maps','qcm':'QCM'};
+  Object.entries(chapters).forEach(([key,val])=>{
+    const [s,n]=key.split('-');
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${sectionNames[s]||s}</td><td>Cap. ${n}</td><td>✅ Completado</td><td>${val.date||''}</td>`;
+    ctbody.appendChild(tr);
+  });
+
+  // QCM scores
+  const stbody=document.getElementById('lb-scores-body'); stbody.innerHTML='';
+  const qNames={1:'QCM 1 — Teórico',2:'QCM 2 — Práctico',3:'QCM 3 — Mixto'};
+  qscores.slice().reverse().slice(0,15).forEach(s=>{
+    const pct=Math.round(s.score/s.total*100);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${qNames[s.qcm]||'QCM '+s.qcm}</td><td>${s.score}/${s.total}</td><td><div style="display:flex;align-items:center;gap:6px"><div class="lb-bar" style="width:${pct}%;max-width:120px;height:8px;background:${pct>=70?'#5C7A4E':'#9B4A2C'};border-radius:4px"></div><span style="font-size:12px">${pct}%</span></div></td><td>${s.date}</td>`;
+    stbody.appendChild(tr);
+  });
+}
+
+function lbShowTab(tab, btn){
+  document.querySelectorAll('.lb-filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('lb-sessions-view').style.display=tab==='sessions'?'':'none';
+  document.getElementById('lb-chapters-view').style.display=tab==='chapters'?'':'none';
+  document.getElementById('lb-scores-view').style.display=tab==='scores'?'':'none';
+}
+
+function clearAllData(){
+  ['chapters','sessions','qcmscores','user'].forEach(k=>LS.del(k));
+  chaptersDone={}; sessionStart=Date.now();
+  showNotif('🗑 Datos borrados',3000);
+  renderLB();
+}
+
+// ===== ONBOARDING CHECK =====
+document.addEventListener('DOMContentLoaded',()=>{
+  buildQCM(1); buildQCM(2); buildQCM(3);
+  const saved=LS.get('user');
+  if(saved) {
+    currentUser=saved;
+    updateHeaderUser();
+    document.getElementById('onboarding').style.display='none';
+    sessionStart=Date.now();
+    startChrono();
+    startSurpriseTimer();
+    restoreChapters();
+    renderLB();
+    checkURLDuel();
+  } else {
+    // show onboarding, chrono starts after
+  }
+  updateRing();
+});
+
+document.getElementById('settings-modal').addEventListener('click',function(e){ if(e.target===this)closeSettings(); });
+document.getElementById('surprise-overlay').addEventListener('click',function(e){ if(e.target===this)closeSurprise(false); });
+
+window.addEventListener('beforeunload', saveSession);
+</script>
+</body>
+</html>
