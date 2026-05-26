@@ -52,9 +52,16 @@ header{background:var(--dark);color:var(--cream);padding:0 1.5rem;display:flex;a
 .logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;letter-spacing:0.08em;color:var(--accent-light)}
 .logo span{color:#fff;font-weight:400}
 .header-center{display:flex;align-items:center;gap:1rem}
-.user-pill{display:flex;align-items:center;gap:0.5rem;background:rgba(196,168,130,0.08);border:1px solid rgba(196,168,130,0.18);border-radius:20px;padding:4px 12px 4px 6px;cursor:pointer}
+.user-pill{display:flex;align-items:center;gap:0.5rem;background:rgba(196,168,130,0.08);border:1px solid rgba(196,168,130,0.18);border-radius:20px;padding:4px 12px 4px 6px;cursor:pointer;position:relative}
 .user-pill img,.user-pill .user-avatar{width:26px;height:26px;border-radius:50%;object-fit:cover;background:rgba(196,168,130,0.2);font-size:14px;display:flex;align-items:center;justify-content:center}
 .user-pill span{font-size:13px;color:var(--accent-light);font-weight:500}
+.user-dropdown{display:none;position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--dark);border:1px solid rgba(196,168,130,0.2);border-radius:10px;min-width:180px;z-index:150;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.user-dropdown.open{display:block}
+.user-dropdown-item{display:flex;align-items:center;gap:0.6rem;padding:10px 14px;font-size:13px;color:var(--cream);cursor:pointer;transition:background 0.15s;border:none;background:none;width:100%;text-align:left;font-family:'Jost',sans-serif}
+.user-dropdown-item:hover{background:rgba(196,168,130,0.1)}
+.user-dropdown-item.danger{color:#E59B7A}
+.user-dropdown-item.danger:hover{background:rgba(229,155,122,0.1)}
+.user-dropdown-sep{height:1px;background:rgba(196,168,130,0.15);margin:2px 0}
 .header-right{display:flex;align-items:center;gap:0.8rem}
 .pomo-ring-wrap{position:relative;width:44px;height:44px;cursor:pointer}
 .pomo-ring-wrap svg{position:absolute;inset:0;transform:rotate(-90deg)}
@@ -354,9 +361,21 @@ nav::-webkit-scrollbar{display:none}
 <header>
   <div class="logo"><span>TMO</span> I</div>
   <div class="header-center">
-    <div class="user-pill" onclick="showPage('leaderboard')" title="Ver mis estadísticas">
+    <div class="user-pill" onclick="toggleUserDropdown(event)" title="Cuenta">
       <div class="user-avatar" id="header-avatar">👤</div>
       <span id="header-name">Estudiante</span>
+      <span style="font-size:10px;color:rgba(196,168,130,0.5);margin-left:2px">▾</span>
+      <div class="user-dropdown" id="user-dropdown">
+        <div style="padding:10px 14px 6px;border-bottom:1px solid rgba(196,168,130,0.15)">
+          <div style="font-size:10px;letter-spacing:0.07em;text-transform:uppercase;color:rgba(196,168,130,0.5);margin-bottom:2px">Cuenta activa</div>
+          <div style="font-size:13px;color:var(--accent-light);font-weight:500" id="dropdown-name">—</div>
+        </div>
+        <button class="user-dropdown-item" onclick="openAccountModal()">✏️ Cambiar nombre / avatar</button>
+        <button class="user-dropdown-item" onclick="showPage('leaderboard');closeUserDropdown()">🏆 Mis estadísticas</button>
+        <div class="user-dropdown-sep"></div>
+        <button class="user-dropdown-item danger" onclick="switchAccount()">🔄 Cambiar de cuenta</button>
+        <button class="user-dropdown-item danger" onclick="confirmLogout()">🚪 Cerrar sesión</button>
+      </div>
     </div>
   </div>
   <div class="header-right">
@@ -1099,6 +1118,27 @@ nav::-webkit-scrollbar{display:none}
   </div>
 </div>
 
+<!-- ACCOUNT MODAL -->
+<div class="modal-overlay" id="account-modal">
+  <div class="modal-box">
+    <h2 class="modal-title">👤 Mi cuenta</h2>
+    <p class="modal-subtitle">Modifica tu nombre o avatar</p>
+    <div style="display:flex;justify-content:center;margin-bottom:0.8rem">
+      <div id="acc-avatar-preview" onclick="document.getElementById('acc-file').click()" style="width:72px;height:72px;border-radius:50%;border:2px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;background:var(--accent-pale)">👤</div>
+    </div>
+    <input type="file" id="acc-file" accept="image/*" style="display:none" onchange="loadAccAvatar(event)">
+    <div style="display:flex;gap:0.4rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem" id="acc-emoji-row"></div>
+    <div class="pomo-slider-group" style="margin-bottom:0.8rem">
+      <label style="font-size:11px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:0.4rem">Nombre / Pseudo</label>
+      <input type="text" id="acc-name" maxlength="32" style="width:100%;padding:9px 12px;border:1px solid var(--border-strong);border-radius:6px;font-family:'Jost',sans-serif;font-size:14px;background:#fff;color:var(--dark)">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeAccountModal()">Cancelar</button>
+      <button class="btn-primary" onclick="saveAccount()">Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== SETTINGS MODAL ===== -->
 <div class="modal-overlay" id="settings-modal">
   <div class="modal-box">
@@ -1190,12 +1230,101 @@ function finishOnboarding() {
 function updateHeaderUser() {
   const ha = document.getElementById('header-avatar');
   const hn = document.getElementById('header-name');
+  const dn = document.getElementById('dropdown-name');
   if(currentUser.avatarType === 'img') {
     ha.innerHTML = `<img src="${currentUser.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`;
   } else { ha.textContent = currentUser.avatar; }
   hn.textContent = currentUser.name;
+  if(dn) dn.textContent = currentUser.name;
   document.getElementById('lb-user-avatar-big').innerHTML = currentUser.avatarType==='img' ? `<img src="${currentUser.avatar}" style="width:48px;height:48px;border-radius:50%;object-fit:cover">` : currentUser.avatar;
   document.getElementById('lb-username-big').textContent = currentUser.name;
+}
+
+// ---- DROPDOWN ----
+function toggleUserDropdown(e){
+  e.stopPropagation();
+  document.getElementById('user-dropdown').classList.toggle('open');
+}
+function closeUserDropdown(){
+  document.getElementById('user-dropdown').classList.remove('open');
+}
+document.addEventListener('click', ()=>closeUserDropdown());
+
+// ---- ACCOUNT MODAL ----
+let accTempAvatar = null, accTempAvatarType = null;
+
+function openAccountModal(){
+  closeUserDropdown();
+  // Pre-fill current data
+  document.getElementById('acc-name').value = currentUser.name;
+  const prev = document.getElementById('acc-avatar-preview');
+  if(currentUser.avatarType==='img'){
+    prev.innerHTML = `<img src="${currentUser.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`;
+  } else {
+    prev.textContent = currentUser.avatar;
+  }
+  accTempAvatar = currentUser.avatar;
+  accTempAvatarType = currentUser.avatarType;
+
+  // Build emoji picker
+  const row = document.getElementById('acc-emoji-row');
+  row.innerHTML = '';
+  AVATAR_EMOJIS.forEach(em => {
+    const btn = document.createElement('button');
+    btn.textContent = em;
+    btn.style.cssText = 'font-size:20px;background:none;border:1.5px solid var(--border);border-radius:6px;padding:4px 6px;cursor:pointer;transition:all 0.15s';
+    btn.onclick = () => {
+      accTempAvatar = em; accTempAvatarType = 'emoji';
+      document.getElementById('acc-avatar-preview').textContent = em;
+      document.getElementById('acc-avatar-preview').innerHTML = em;
+      row.querySelectorAll('button').forEach(b => b.style.borderColor = 'var(--border)');
+      btn.style.borderColor = 'var(--accent)'; btn.style.background = 'var(--accent-pale)';
+    };
+    if(em === currentUser.avatar) { btn.style.borderColor='var(--accent)'; btn.style.background='var(--accent-pale)'; }
+    row.appendChild(btn);
+  });
+
+  document.getElementById('account-modal').classList.add('visible');
+}
+
+function closeAccountModal(){
+  document.getElementById('account-modal').classList.remove('visible');
+}
+
+function loadAccAvatar(e){
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    accTempAvatar = ev.target.result; accTempAvatarType = 'img';
+    const prev = document.getElementById('acc-avatar-preview');
+    prev.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;border-radius:50%;object-fit:cover">`;
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveAccount(){
+  const name = document.getElementById('acc-name').value.trim() || currentUser.name;
+  currentUser.name = name;
+  if(accTempAvatar){ currentUser.avatar = accTempAvatar; currentUser.avatarType = accTempAvatarType; }
+  LS.set('user', currentUser);
+  updateHeaderUser();
+  closeAccountModal();
+  showNotif('✓ Cuenta actualizada',2500);
+}
+
+// ---- SWITCH / LOGOUT ----
+function switchAccount(){
+  closeUserDropdown();
+  if(!confirm('¿Cambiar de cuenta? Tus datos de estudio se mantendrán en este navegador.')) return;
+  LS.del('user');
+  location.reload();
+}
+
+function confirmLogout(){
+  closeUserDropdown();
+  if(!confirm('¿Cerrar sesión? Tus datos de estudio se mantendrán guardados.')) return;
+  LS.del('user');
+  location.reload();
 }
 
 // ===== NAVIGATION =====
@@ -1710,8 +1839,8 @@ function setupMMCanvas(canvas){
 
 // ===== CONFIG SUPABASE =====
 // → Remplace ces deux valeurs par tes credentials Supabase (voir GUIDE_DEPLOIEMENT.md)
-const SUPA_URL = 'https://mabcvxovrhwcbetfxyis.supabase.co';      // ← colle ton Project URL ici
-const SUPA_KEY = 'rlsazxnesaajhoogxjwj';          // ← colle ton anon public key ici
+const SUPA_URL = 'https://XXXX.supabase.co';      // ← colle ton Project URL ici
+const SUPA_KEY = 'eyJXXXXXXXXXXXXXXXXXX';          // ← colle ton anon public key ici
 
 // Helper Supabase REST
 async function supaFetch(path, opts={}){
@@ -1732,7 +1861,7 @@ async function supaFetch(path, opts={}){
 }
 
 function supaConfigured(){
-  return SUPA_URL !== 'https://mabcvxovrhwcbetfxyis.supabase.co' && SUPA_KEY !== 'rlsazxnesaajhoogxjwj';
+  return SUPA_URL !== 'https://XXXX.supabase.co' && SUPA_KEY !== 'eyJXXXXXXXXXXXXXXXXXX';
 }
 
 // ===== DUEL SYSTEM =====
@@ -2379,6 +2508,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 document.getElementById('settings-modal').addEventListener('click',function(e){ if(e.target===this)closeSettings(); });
 document.getElementById('surprise-overlay').addEventListener('click',function(e){ if(e.target===this)closeSurprise(false); });
+document.getElementById('account-modal').addEventListener('click',function(e){ if(e.target===this)closeAccountModal(); });
 
 window.addEventListener('beforeunload', saveSession);
 </script>
